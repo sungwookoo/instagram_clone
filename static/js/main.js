@@ -100,5 +100,16 @@ commentLike.forEach(function(event) {
     })
 })
 
-print(1)
+//댓글 저장하기
+function saveComment() {
+            $.ajax({
+                    type: "POST",
+                    url: "/api/comment",
+                    data: {},
+                    success: function (response) {
+
+                    }
+                }
+            )
+        }
 
