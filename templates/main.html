@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Instagram</title>
+    <link href="../static/style/common.css" rel="stylesheet" type="text/css" />
+    <link href="../static/style/main.css" rel="stylesheet" type="text/css" />
+    <!-- favicon -->
+    <link rel="icon" href="../static/img/favicon.png">
+    <link rel="instagram-icon" href="../static/img/favicon.png">
+  </head>
+  <body>
+    <!-- navigation -->
+    <nav>
+      <div class="nav-container">
+        <div class="nav-1">
+            <!-- <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/logo.png" alt="logo_img">
+            <div class="vl"></div> -->
+            <img class="logo_instagram_txt" src="../static/img/logo_text.png" alt="logo_text">
+        </div>
+        <input id="searchInput" type="search" class="input-search" placeholder="검색">
+        <div class="nav-2">
+          <img src="../static/img/home.png" alt="홈">
+          <img src="../static/img/dm.png" alt="DM">
+          <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
+          <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+          <img class="pic" src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2" alt="마이페이지">
+        </div>
+      </div>
+    </nav>
+    <!-- main -->
+    <main>
+      <div class="feeds">
+        <!-- article -->
+        <article>
+          <header>
+            <div class="profile-of-article">
+              <img class="img-profile pic" src="https://xkxqjlzvieat874751.gcdn.ntruss.com/2/2022/00e6/200e611711c1cb1e695173870af83f162febfc478e4396046a57cd9d4987f6890_o_st.jpg" alt="dlwlrma님의 프로필 사진">
+              <span class="userID main-id point-span">dlwlrma</span>
+            </div>
+            <img class="icon-react icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
+          </header>
+          <div class="main-image">
+            <img src="https://xkxqjlzvieat874751.gcdn.ntruss.com/2/2022/00e6/200e611711c1cb1e695173870af83f162febfc478e4396046a57cd9d4987f6890_o_st.jpg" alt="dlwlrma님의 피드 사진" class="mainPic">
+          </div>
+          <div class="icons-react">
+            <div class="icons-left">
+              <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+              <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png" alt="말풍선">
+              <img class="icon-react" src="../static/img/dm.png" alt="DM">
+            </div>
+            <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/bookmark.png" alt="북마크">
+          </div>
+          <!-- article text data -->
+          <div class="reaction">
+            <div class="liked-people">
+              <img class="pic" src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fe998903e-bca5-4c55-9487-ae69c8224c92%2F%E3%85%87.heic?table=block&id=13935d17-fbbd-4173-8729-2f6540ca1818&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1440&userId=&cache=v2" alt="hwi_ssu님의 프로필 사진">
+              <p><span class="point-span">hwi_ssu</span>님 <span class="point-span">외 2,412,751명</span>이 좋아합니다</p>
+            </div>
+            <div class="description">
+              <p><span class="point-span userID">dlwlrma</span><span class="at-tag">@wkorea @gucci</span> 🌱</p>
+            </div>
+            <div class="comment-section">
+              <ul class="comments">
+                <li>
+                  <span><span class="point-span userID">postmalone</span>내가 입으면 더 잘어울릴 것 같아</span>
+                  <div>
+                    <img class="comment-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
+                    <div class="comment-like">
+                      <img class="comment-heart" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                      <img class="comment-heart-liked" src="../static/img/liked.png" alt="좋아요된하트">
+                    </div>
+                  </div>
+                </li>
+                <!-- input 값 여기에 추가 -->
+              </ul>
+              <div class="time-log">
+                <span>32분 전</span>
+              </div>
+            </div>
+          </div>
+          <div class="hl"></div>
+          <div class="comment">
+            <input id="input-comment" class="input-comment" type="text" placeholder="댓글 달기..." >
+            <button type="submit" class="submit-comment" disabled>게시</button>
+          </div>
+        </article>
+        <article>
+          <header>
+            <div class="profile-of-article">
+              <img class="img-profile pic" src="http://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2021/10/24/AATW7jYfiM0i637707086778704562.jpg" alt="karina_aespas_님의 프로필 사진">
+              <span class="userID main-id point-span">karina_aespas_</span>
+            </div>
+            <img class="icon-react icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
+          </header>
+          <div class="main-image">
+            <img src="https://image.xportsnews.com/contents/images/upload/article/2022/0313/mb_1647169234362908.jpg" alt="karina_aespas_님의 피드 사진" class="mainPic">
+          </div>
+          <div class="icons-react">
+            <div class="icons-left">
+              <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+              <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png" alt="말풍선">
+              <img class="icon-react" src="../static/img/dm.png" alt="DM">
+            </div>
+            <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/bookmark.png" alt="북마크">
+          </div>
+          <!-- article text data -->
+          <div class="reaction">
+            <div class="liked-people">
+              <img class="pic" src="http://file3.instiz.net/data/cached_img/upload/2020/07/08/0/98f34504c6565d1293a6b423d4fd80dd.jpg" alt="_jeongjaehyun님의 프로필 사진">
+              <p><span class="point-span">_jeongjaehyun</span>님 <span class="point-span">외 4,612,203명</span>이 좋아합니다</p>
+            </div>
+            <div class="description">
+              <p><span class="point-span userID">karina_aespas_</span>🌱</p>
+            </div>
+            <div class="comment-section">
+              <ul class="comments">
+                <li>
+                  <span><span class="point-span userID">williamhammington</span>예쁘다~</span>
+                  <div>
+                    <img class="comment-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
+                    <div class="comment-like">
+                      <img class="comment-heart" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                      <img class="comment-heart-liked" src="../static/img/liked.png" alt="좋아요된하트">
+                    </div>
+                  </div>
+                </li>
+                <!-- input 값 여기에 추가 -->
+              </ul>
+              <div class="time-log">
+                <span>1시간 전</span>
+              </div>
+            </div>
+          </div>
+          <div class="hl"></div>
+          <div class="comment">
+            <input id="input-comment2" class="input-comment" type="text" placeholder="댓글 달기..." >
+            <button type="submit" class="submit-comment" disabled>게시</button>
+          </div>
+        </article>
+
+      </div>
+      <!-- main-right -->
+      <div class="main-right">
+        <div class="myProfile">
+          <img class="pic" src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2" alt="kusungwoo님의 프로필 사진">
+          <div>
+            <span class="userID point-span">kusungwoo</span>
+            <span class="sub-span">구성우</span>
+          </div>
+        </div>
+        <!-- story section -->
+        <div class="section-story">
+          <div class="menu-title">
+            <span class="sub-title">스토리</span>
+            <span class="find-more">모두 보기</span>
+          </div>
+          <ul class="story-list">
+            <li>
+              <div class="gradient-wrap">
+                <img class="img-profile story" src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fc1cf8f6c-26a4-47de-a0d0-81de73c6be9b%2FSparta_Logo_Basic_1.png?table=block&id=6666aafc-d523-4ab9-b4e1-3b9800c91fb6&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2" alt="team_sparta님의 프로필 사진">
+              </div>
+              <div class="profile-text">
+                <span class="userID point-span">team_sparta</span>
+                <span class="sub-span">12분 전</span>  
+              </div>
+            </li>
+            <li>
+              <div class="gradient-wrap">
+                <img class="img-profile story" src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fe998903e-bca5-4c55-9487-ae69c8224c92%2F%E3%85%87.heic?table=block&id=13935d17-fbbd-4173-8729-2f6540ca1818&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1440&userId=&cache=v2" alt="hwi_ssu님의 프로필 사진">
+              </div>
+              <div class="profile-text">
+                <span class="userID point-span">hwi_ssu</span>
+                <span class="sub-span">28분 전</span>  
+              </div>
+            </li>
+            <li>
+              <div class="gradient-wrap">
+                <img class="img-profile story" src="https://w.namu.la/s/9d861e060e3dba0ab3d17acf5282b1ad11b4d494a57cedac0fa26154f93e7649a4cc22d4ef6dcfc8dee4c59469ed85d9ecbb2db057921750e6583f238541fa81fce4730a467a3ce2faf4383499fb0df20112d74e3d914e46aa32e98ab68853bb" alt="dntlrdl님의 프로필 사진">
+              </div>
+              <div class="profile-text">
+                <span class="userID point-span">dntlrdl</span>
+                <span class="sub-span">40분 전</span>  
+              </div>
+            </li>
+            <li>
+              <div class="gradient-wrap">
+                <img class="img-profile story" src="https://w.namu.la/s/f9d7f9f01b0e3bb234e2a8b3c7566fe416972de39e4c0d39689f5510053c09cf57c0d07d0e6c96b4b7730f4eda5a5651975d921f94b0d0d7fa4e3299afee9cb4ced1b51b47391d0d62024930fbf4295f" alt="i_icaruswalks님의 프로필 사진">
+              </div>
+              <div class="profile-text">
+                <span class="userID point-span">i_icaruswalks</span>
+                <span class="sub-span">56분 전</span>  
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- recommendation section -->
+        <div class="section-recommend">
+          <div class="menu-title">
+            <span class="sub-title">회원님을 위한 추천</span>
+            <span class="find-more">모두 보기</span>
+          </div>
+          <ul class="recommend-list">
+            <li>
+              <div class="recommend-friend-profile">
+                <img class="img-profile" src="https://mblogthumb-phinf.pstatic.net/MjAyMDAzMjlfNDYg/MDAxNTg1NDgzODIwMTA1.KDaOh3f1dHkwnvA20srKHbfb51GoRGiwD5wqE15VAgYg.vC1x2tBbZB1KblHH2O-yng09vKzqhgz1Ip2WQEpcdJsg.JPEG.kioncr/1585483818009.jpg?type=w800" alt="renebaebae님의 프로필 사진">
+                <div class="profile-text">
+                  <span class="userID point-span">renebaebae</span>
+                  <span class="sub-span">hi_sseulgi님 외 2명이 팔로우합니다</span>
+                </div>
+              </div>
+              <span class="btn-follow">팔로우</span>
+            </li>
+            <li>
+              <div class="recommend-friend-profile">
+                <img class="img-profile" src="https://w.namu.la/s/0e0e0d2f627a78f155cc57726ce5b0bb56ccaafdc2834f5a114c6940508484092718a1432a731552050268da48f36a2ab988226d8808342a53a3cf405527b9c636dae3bc39f73644a30a54bd76a20a02a8040a9c20b6562211ba5a36589bbdc0" alt="_jeongjaehyun님의 프로필 사진">
+                <div class="profile-text">
+                  <span class="userID point-span">_jeongjaehyun</span>
+                  <span class="sub-span">johnnyjsuh님이 팔로우합니다</span>  
+                </div>
+              </div>
+              <span class="btn-follow">팔로우</span>
+            </li>
+            <li>
+              <div class="recommend-friend-profile">
+                <img class="img-profile" src="https://t1.daumcdn.net/cfile/tistory/9985CE4B5FE19DAC20" alt="leehi_hi님의 프로필 사진">
+                <div class="profile-text">
+                  <span class="userID point-span">leehi_hi</span>
+                  <span class="sub-span">dlwlrma님 외 5명이 팔로우합니다</span>
+                </div>
+              </div>
+              <span class="btn-follow">팔로우</span>
+            </li>
+          </ul>
+        </div>
+        <footer>
+          <p class="insta-sccript">
+            소개 ∙ 도움말 ∙ 홍보 센터 ∙ API ∙ 채용 정보 ∙ 개인정보처리방침 ∙ <br>약관 ∙ 위치 ∙ 인기계정 ∙ 해시태그 ∙ 언어
+            <br><br>
+            © 2022 INSTAGRAM FROM META
+          </p>
+        </footer>
+      </div>
+    </main>
+    <script src="../static/js/main.js"></script>
+  </body>
+</html>
