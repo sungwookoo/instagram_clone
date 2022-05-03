@@ -100,4 +100,5 @@ commentLike.forEach(function(event) {
     })
 })
 
+print(1)
 
