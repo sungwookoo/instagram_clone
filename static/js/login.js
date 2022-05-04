@@ -1,28 +1,36 @@
-const idInput = document.getElementById('userID');
-const pwInput = document.getElementById('userPW');
-const loginInput = document.getElementsByClassName('container')[0];
-const loginBtn = document.getElementById('btn_login');
-const linkToMain = document.getElementsByTagName('a')[0];
-
-function idCheck() {
-    var hasAt = idInput.value.indexOf('@');
-    return hasAt !== -1 ? true : false;
-}
-
-function pwCheck() {
-    return pwInput.value.length >= 5 ? true : false;
-}
-
-loginInput.addEventListener('keyup', function(event) {
-    const completedInput = (idCheck() && pwCheck());
-    loginBtn.disabled = completedInput ? false : true;
-    linkToMain.href = completedInput ? "http://localhost:5000/main" : "#none";
-})
-
-document.addEventListener('keyup', function(event) {
-    // 임시 - 엔터 입력 시 메인 페이지 이동
-    if (event.keyCode === 13) {
-        window.location.href="http://localhost:5000/main";
-        // loginBtn.click();
+function login() {
+    if(!checkNotEmpty()) {
+        alert('잘못된 입력입니다.')
+        return;
     }
-})
+     $.ajax({
+                type: "POST",
+                url: "/api/login",
+                data: {id_give: $('#user_id').val(), pw_give: $('#password').val()},
+                success: function (response) {
+                    if(response['result'] === 'success') {
+                        $.cookie('token', response['token'])
+                        alert('로그인 성공')
+                        window.location.href = '/';
+                    }
+                    else {
+                        alert(response['msg'])
+                    }
+                }
+            })
+}
+
+function checkNotEmpty() {
+    return $('#password').val().length >= 5 && $('#user_id').val().length > 0;
+}
+
+$('.container').keyup('keyup', function(event) {
+    let completedInput = checkNotEmpty();
+    $('#btn_login').attr('disabled',!completedInput);
+
+    if(event.keyCode === 13) {
+        if(checkNotEmpty()) {
+            $('#btn_login').click();
+        }
+    }
+});
