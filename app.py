@@ -28,7 +28,7 @@ def home():
         user = db.users.find_one({'user_id': payload['id']})
         return render_template('main.html', user_id=user["user_id"])
     except jwt.ExpiredSignatureError:
-        return redirect(url_for('login', msg='로그인이 만료되었습니다.'))
+        return redirect(url_for('login'))
     except jwt.exceptions.DecodeError:
         return render_template('login.html')
 
@@ -36,7 +36,7 @@ def home():
 @app.route('/login')
 def login():
     msg = request.args.get('msg')
-    return render_template('login.html', msg=msg)
+    return render_template('login.html')
 
 
 @app.route('/signup')
@@ -46,19 +46,22 @@ def signup():
 
 @app.route('/api/register', methods=['POST'])
 def sign_up():
-    password = request.form['pw_give']
-    hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    user = db.users.find_one({'user_id': request.form['id_give']})
+    if user is not None:
+        return jsonify({'result': 'duplication', 'msg': '이미 존재하는 사용자이름입니다.'})
 
-    doc = {'user_id': request.form['id_give'],
-           'password': hashed_pw,
-           'name': request.form['name_give'],
-           'phone': request.form['phone_give'],
-           'email': request.form['email_give'],
-           'profile_img_src': ''
-           }
-    db.users.insert_one(doc)
-
-    return jsonify({'msg': '회원가입이 완료되었습니다.'})
+    else:
+        password = request.form['pw_give']
+        hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        doc = {'user_id': request.form['id_give'],
+               'password': hashed_pw,
+               'name': request.form['name_give'],
+               'phone': request.form['phone_give'],
+               'email': request.form['email_give'],
+               'profile_img_src': ''
+               }
+        db.users.insert_one(doc)
+        return jsonify({'msg': '회원가입이 완료되었습니다.'})
 
 
 # 로그인 API
@@ -68,11 +71,11 @@ def login_proc():
     password = request.form['pw_give']
     hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
-    user = db.user.find_one({'id': user_id, 'pw': hashed_pw})
+    user = db.users.find_one({'user_id': user_id, 'password': hashed_pw})
 
-    if user is None:
+    if user is not None:
         payload = {'id': user_id,
-                   'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)}
+                   'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)}
 
         return jsonify({
             'result': 'success',
