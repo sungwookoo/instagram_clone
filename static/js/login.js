@@ -10,7 +10,6 @@ function login() {
                 success: function (response) {
                     if(response['result'] === 'success') {
                         $.cookie('token', response['token'])
-                        alert('로그인 성공')
                         window.location.href = '/';
                     }
                     else {
