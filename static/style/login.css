@@ -1,7 +1,18 @@
 .container {
-    width: 350px;
+    width: 360px;
     height: 380px;
-    margin: 100px auto;
+    margin: 110px auto 30px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border: 1px solid #DBDBDB;
+}
+.mini_container {
+    width: 360px;
+    height: 70px;
+    margin: 10px auto;
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -63,8 +74,23 @@ a {
     color : #00366B;
     align-self: center;
     font-size: 12px;
-    margin-top: 70px;
+    margin-top: 60px;
 }
+
+.sign_up {
+    color : #00366B;
+    align-self: center;
+    font-size: 14px;
+    margin-top: 25px;
+}
+
+.sign_up a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #0095f6;
+    cursor: pointer;
+}
+
 .button_forgot:hover {
     cursor: pointer;
 }
