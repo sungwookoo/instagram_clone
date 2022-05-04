@@ -1,119 +1,79 @@
-const commentInput = document.getElementsByClassName('input-comment')[0];
-const commentBtn = document.getElementsByClassName('submit-comment')[0];
-const commentList = document.getElementsByClassName('comments')[0];
-
-// 댓글 달기
-
-function addComment() {
-    var newComment = document.createElement('li')
-    newComment.innerHTML = `<span><span class="point-span userID">thisisyourhyung</span>` + commentInput.value + `</span>`;
-
-    // 코멘트에 더해지는 버튼 생성
-    let commentBtns = document.createElement('div');
-
-    let deleteBtn = document.createElement('img');
-    deleteBtn.classList.add("comment-more");
-    deleteBtn.src = "https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png";
-    deleteBtn.alt = "more";
-
-    let likeBtn = document.createElement('img');
-    likeBtn.classList.add("comment-heart");
-    likeBtn.src = "https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png";
-    likeBtn.alt = "하트";
-
-    let likedBtn = document.createElement('img');
-    likedBtn.classList.add("comment-heart-liked");
-    likedBtn.src = "img/liked.png";
-    likedBtn.alt = "좋아요된하트";
-
-    let commentLike = document.createElement('div');
-    commentLike.classList.add("comment-like");
-
-    // 버튼에 함수 선언
-    deleteBtn.addEventListener('click', function() {
-        this.parentNode.parentNode.remove();
-    })
-
-    commentLike.addEventListener('click', () => {
-        if (likeBtn.style.display === 'none') {
-            likeBtn.style.display = 'inline-block';
-            likedBtn.style.display = 'none';
-        } else {
-            likeBtn.style.display = 'none';
-            likedBtn.style.display = 'inline-block';
+// 댓글 작성(POST) API
+function saveComment() {
+    let content = $('#comment_content').val()
+    if (content === '') {
+        alert("입력하지 않은 항목이 존재합니다.");
+        return;
+    }
+    $.ajax({
+            type: "POST",
+            url: "/api/comment",
+            data: {content: content, write_id: write_id, feed_idx: feed_idx},
+            success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
+            }
         }
-    })
-
-    // 코멘트에 버튼 추가
-    commentLike.appendChild(likeBtn);
-    commentLike.appendChild(likedBtn);
-    commentBtns.appendChild(deleteBtn);
-    commentBtns.appendChild(commentLike);
-    newComment.appendChild(commentBtns);
-    commentList.appendChild(newComment);
-    commentInput.value = "";
-    commentBtn.disabled = true;
+    )
 }
 
-commentBtn.addEventListener('click', function(){
-    if (commentInput.value) {
-        addComment();
-    }
-})
-
-commentInput.addEventListener('keyup', function(e){
-    if (commentInput.value) {
-        commentBtn.disabled = false;
-        if (e.which === 13) {
-            addComment();
-        }
-    }
-    else {
-    commentBtn.disabled = true;
-    }
-})
-
-// 댓글 지우기
-
-let deleteBtn = document.querySelectorAll('.comment-more');
-deleteBtn.forEach(function(event) {
-    event.addEventListener('click', function() {
-        this.parentNode.parentNode.remove();
-    });
-})
-
-// 댓글 좋아요
-
-let commentLike = document.querySelectorAll('.comment-like');
-commentLike.forEach(function(event) {
-    event.addEventListener('click', function() {
-        var likeBtn = this.querySelector('.comment-heart');
-        var likedBtn = this.querySelector('.comment-heart-liked');
-
-        if (likeBtn.style.display === 'none') {
-            likeBtn.style.display = 'inline-block';
-            likedBtn.style.display = 'none';
-        } else {
-            likeBtn.style.display = 'none';
-            likedBtn.style.display = 'inline-block';
+// 댓글 보여주기
+function getComment() {
+    $.ajax({
+        type: "GET",
+        url: "/api/comment",
+        data: {},
+        success: function (response) {
+            let comments = response['all_comments'];
+            for (let i = 0; i < comments.length; i++) {
+                let writer = comments[i]['writer_id'];
+                let feed_idx = comments[i]['feed_idx'];
+                let content = comments[i]['content'];
+                let created_at = comments[i]['created_at'];
+                let temp_html =
+                    '<li><span><span class="point-span userID">${writer}</span>${content}</span></li>'
+                $('#comment_list').append(temp_html);
+            }
         }
     })
-})
-
-        function saveComment() {
-            let content = $('#comment_content').val()
-            if (content === '') {
-                alert("입력하지 않은 항목이 존재합니다.");
-                return;
+}
+// feed 작성(POST) API
+function saveFeed() {
+    $.ajax({
+            type: "POST",
+            url: "/api/feed",
+            data: {user_id: user_id},
+            success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
             }
-            $.ajax({
-                    type: "POST",
-                    url: "/api/comment",
-                    data: {content:content, write_id:write_id, feed_idx:feed_idx},
-                    success: function (response) {
-                        alert(response["msg"]);
-                        window.location.reload();
-                    }
-                }
-            )
         }
+    )
+}
+
+// 피드 작성(GET) API
+function getFeed() {
+    $.ajax({
+        type: "GET",
+        url: "/api/feed",
+        data: {},
+        success: function (response) {
+            let comments = response['all_comments'];
+            for (let i = 0; i < comments.length; i++) {
+                let writer = comments[i]['writer_id'];
+                let feed_idx = comments[i]['feed_idx'];
+                let content = comments[i]['content'];
+                let created_at = comments[i]['created_at'];
+                let temp_html =
+                    '<li><span><span class="point-span userID">${writer}</span>${content}</span></li>'
+                $('#comment_list').append(temp_html);
+            }
+        }
+    })
+}
+
+
+// 모달 버튼에 이벤트를 건다.
+$('.downloadimg').on('click', function(){
+$('#modalBox').modal('hide');
+});

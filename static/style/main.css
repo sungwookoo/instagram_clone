@@ -103,6 +103,15 @@ nav img {
     background-position: center left;
     background-image: url('../img/cancel.png');
   }
+.feedadd {
+    width: 27px;
+    height: 27px;
+    margin-left: 15px;
+    all: unset;
+}
+.modal-dialog {
+    z-index: 2001;
+}
 /* main */
 main {
     width: 960px;
