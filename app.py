@@ -11,6 +11,8 @@ from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
 >>>>>>> initial commit
 
+import datetime
+
 # import db_config
 app = Flask(__name__)
 
@@ -158,7 +160,24 @@ def save_comment():
     return jsonify({'msg': '댓글이 작성되었습니다.'})
 
 
+# 댓글 작성(POST) API
+@app.route('/api/comment', methods=['POST'])
+def save_comment():
+    writer_receive = request.form['writer_id']
+    content_receive = request.form['content']
+    feed_idx = request.form['feed_idx']
+    created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
+    doc = {
+        'writer_id': writer_receive,
+        'feed_idx': feed_idx,
+        'content': content_receive,
+        'created_at': created_at
+    }
+
+    db.comments.insert_one(doc)
+
+    return jsonify({'msg': '댓글이 작성되었습니다.'})
 
 
 if __name__ == '__main__':
