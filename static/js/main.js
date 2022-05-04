@@ -100,35 +100,20 @@ commentLike.forEach(function(event) {
     })
 })
 
-//댓글 저장하기
-function saveComment() {
+        function saveComment() {
+            let content = $('#comment_content').val()
+            if (content === '') {
+                alert("입력하지 않은 항목이 존재합니다.");
+                return;
+            }
             $.ajax({
                     type: "POST",
                     url: "/api/comment",
-                    data: {},
+                    data: {content:content, write_id:write_id, feed_idx:feed_idx},
                     success: function (response) {
-
+                        alert(response["msg"]);
+                        window.location.reload();
                     }
                 }
             )
         }
-print(1)
-print(3)
-print(4)
-print(3)
-print(4)
-print(1)
-print(2)
-print(3)
-print(2)
-print(3)
-print(4)
-print(1)
-print(2)
-print(3)
-print(4)
-print(1)
-print(2)
-print(3)
-print(4)
-
