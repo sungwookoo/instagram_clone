@@ -65,7 +65,7 @@ function signup() {
 
     $.ajax({
         type: "POST",
-        url: "/register",
+        url: "/api/register",
         data: {id_give: user_id, pw_give: password, name_give: name, phone_give: phone, email_give: email},
         success: function (response) {
                 alert(response['msg'])
