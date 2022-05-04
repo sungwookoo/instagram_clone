@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Instagram</title>
+    <link href="../static/style/common.css" rel="stylesheet" type="text/css" />
+    <link href="../static/style/signup.css" rel="stylesheet" type="text/css" />
+    <!-- favicon -->
+    <link rel="icon" href="../static/img/favicon.png">
+    <link rel="instagram-icon" href="../static/img/favicon.png">
+  </head>
+  <body>
+    <div class="container">
+      <img class="logo_instagram" src="../static/img/logo_text.png" alt="instagram_logo">
+      <input type="text" class="input_login" name="phone_or_email" id="phone_or_email" placeholder="휴대폰 번호 또는 이메일 주소">
+      <input type="text" class="input_login" name="name" id="name" placeholder="성명">
+      <input type="text" class="input_login" name="user_id" id="user_id" placeholder="사용자 이름">
+      <input type="password" class="input_login" name="password" id="password" placeholder="비밀번호">
+      <a href="" onclick="signup()"><button id="btn_signup" disabled>가입</button></a>
+    </div>
+    <div class="mini_container">
+      <span class="sign_up">계정이 있으신가요? <a href="/login">로그인</a></span>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/js/signup.js"></script>
+  </body>
+</html>
