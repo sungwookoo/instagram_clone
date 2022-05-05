@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+import os
 import datetime
 
 from flask import Flask, render_template, jsonify, request, redirect, url_for
@@ -6,10 +6,8 @@ from pymongo import MongoClient
 import jwt
 import hashlib
 import config
-=======
 from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
->>>>>>> initial commit
 
 import datetime
 
@@ -17,7 +15,8 @@ import datetime
 app = Flask(__name__)
 
 # DB
-<<<<<<< HEAD
+# db_cf = db_config.DbConfig()
+# db = db_cf.client.dbmygame
 client = MongoClient('localhost', 27017)
 db = client.dbinsta
 

@@ -302,13 +302,16 @@
                             <h5 class="modal-title" id="exampleModalLabel">새 게시물 만들기</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <input type="file" class="real-upload" accept="image/*" required multiple>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="downloadimg">게시</button>
-                        </div>
+                        <form action = "http://localhost:5000/api/upload" method = "POST"
+                                  enctype = "multipart/form-data">
+                            <div class="modal-body">
+                                <input type="file" name="file" class="real-upload" accept="image/*" required multiple>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="downloadimg">게시</button>
+                            </div>
+                        </form>>
                     </div>
                 </div>
 </div>
