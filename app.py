@@ -24,6 +24,7 @@ def login():
 def main():
     return render_template('main.html')
 
+# 보니까 이 두개 합쳐야함.. ㄷㄷ..
 # 파일 전송하기(POST)
 @app.route('/api/upload', methods=['get', 'POST'])
 def upload_file():
@@ -31,22 +32,34 @@ def upload_file():
         file = request.files['file']
         filename = secure_filename(file.filename)
         file.save(os.path.join('static','uploads',filename))
-        return 'success'
+        feed_img_src = os.path.join('static','uploads',filename)
+        created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+
+        doc = {
+            'user_id': 'testId0',
+            'feed_img_src': feed_img_src,
+            'content': '테스트 용',
+            'created_at': created_at
+        }
+
+        db.feed.insert_one(doc)
+        return redirect(url_for('main'))
 
 # 피드 작성(POST) API
-@app.route('/api/feed', methods=['POST'])
-def save_feed():
-    user_id_receive = request.form['user_id']
-    created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-
-    doc = {
-        'user_id': user_id_receive,
-        'created_at': created_at
-    }
-
-    db.comments.insert_one(doc)
-
-    return jsonify({'msg': '작성되었습니다.'})
+# @app.route('/api/feed', methods=['POST'])
+# def save_feed():
+#     user_id_receive = request.form['user_id']
+#     created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+#     feed_img_src = upload_file()
+#     doc = {
+#         'user_id': user_id_receive,
+#         'created_at': created_at,
+#         'feed_img_src': feed_img_src
+#     }
+#
+#     db.feed.insert_one(doc)
+#
+#     return jsonify({'msg': '작성되었습니다.'})
 
 # id를 문자열로 바꾸는 함수
 def objectIdToString(find_list):
