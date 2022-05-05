@@ -1,5 +1,7 @@
-from flask import Flask, render_template, jsonify, request
+import os
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
+from werkzeug.utils import secure_filename
 
 import datetime
 
@@ -21,6 +23,15 @@ def login():
 @app.route('/main')
 def main():
     return render_template('main.html')
+
+# 파일 전송하기(POST)
+@app.route('/api/upload', methods=['get', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('static','uploads',filename))
+        return 'success'
 
 # 댓글 작성(POST) API
 @app.route('/api/comment', methods=['POST'])
