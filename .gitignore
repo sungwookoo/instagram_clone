@@ -1,5 +1,6 @@
 venv/
 .vscode/
 .idea/
-
+*.pyc
+uploads/
 config.py
