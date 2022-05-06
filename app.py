@@ -132,12 +132,15 @@ def get_feed():
     users = list(db.users.find({}))
     feeds = list(db.feed.find({}))
     comments = list(db.comment.find({}))
+    likes = list(db.like.find({}))
     feeds = objectIdToString(feeds)
     users = objectIdToString(users)
     comments = objectIdToString(comments)
+    likes = objectIdToString(likes)
     return jsonify({'all_users': users,
                     'all_feeds': feeds,
-                    'all_comments': comments
+                    'all_comments': comments,
+                    'all_likes': likes
                     })
 
 
@@ -159,6 +162,33 @@ def save_comment():
     db.comment.insert_one(doc)
 
     return jsonify({'msg': '댓글이 작성되었습니다.'})
+
+
+# 좋아요(POST) API
+@app.route('/api/like', methods=['POST'])
+def like():
+    # user_id는 로그인기능에서 받아오면 제대로 수정.
+    user_id = 'testId0'
+    created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    likes = list(db.like.find({}))
+    feed_idx = request.form['feed_idx']
+    count=0
+    for i in range(len(likes)):
+        if likes[i]['feed_idx']==feed_idx:
+            if likes[i]['user_id']==user_id:
+                count+=1
+    if count == 1:
+        db.like.delete_one({'user_id': user_id})
+    else:
+        doc = {
+            'user_id': 'testId0',
+            'feed_idx': feed_idx,
+            'created_at': created_at
+        }
+
+        db.like.insert_one(doc)
+
+    return jsonify({'msg': '좋아요.'})
 
 
 if __name__ == '__main__':

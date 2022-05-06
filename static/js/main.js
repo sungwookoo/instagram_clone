@@ -1,5 +1,6 @@
 $(document).ready(function () {
     getFeed();
+
 })
 
 
@@ -22,6 +23,19 @@ function saveComment(i, feed_idx) {
     )
 }
 
+// 좋아요 기능(POST) API
+function saveLike(feed_idx) {
+    $.ajax({
+            type: "POST",
+            url: "/api/like",
+            data: {feed_idx: feed_idx},
+            success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
+            }
+        }
+    )
+}
 
 // 피드 작성(GET) API
 function getFeed() {
@@ -33,13 +47,20 @@ function getFeed() {
             let users = response['all_users'];
             let feeds = response['all_feeds'];
             let comments = response['all_comments'];
+            let likes = response['all_likes'];
             for (let i = 0; i < feeds.length; i++) {
                 let created_at = feeds[i]['created_at'];
                 let content = feeds[i]['content'];
                 let feed_img_src = feeds[i]['feed_img_src'];
                 let user_id = feeds[i]['user_id'];
-                let feed_idx = feeds[i]['_id']
-                // 이렇게 하면 안됨. 이렇게 해서 어떤 예를들면 comment_contents[i] = `저거 다 추가된거`로 되서 이거를 아래에다가 딱 넣어야될것같음.
+                let feed_idx = feeds[i]['_id'];
+                let like_count = 0;
+                for (let k = 0; k < likes.length; k++) {
+                    if (likes[k]['feed_idx']===feed_idx) {
+                        like_count++
+                    }
+
+                }
                 for (let j = 0; j < users.length; j++) {
                     if (user_id === users[j]['user_id']) {
                         let profile_img_src = users[j]['profile_img_src'];
@@ -61,8 +82,7 @@ function getFeed() {
                 </div>
                 <div class="icons-react">
                     <div class="icons-left">
-                        <img class="icon-react"
-                             src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                        <button class="like_button" onclick="saveLike('${feed_idx}')"></button>
                         <img class="icon-react"
                              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png" alt="말풍선">
                         <img class="icon-react" src="../static/img/dm.png" alt="DM">
@@ -73,7 +93,7 @@ function getFeed() {
                 <!-- article text data -->
                 <div class="reaction">
                     <div class="liked-people">
-                        <p><span class="point-span">hwi_ssu</span>님 <span class="point-span">외 2,412,751명</span>이 좋아합니다</p>
+                        <p><span class="point-span">좋아요</span> <span class="point-span">${like_count}개</span></p>
                     </div>
                     <div class="description">
                         <p><span class="point-span userID">${user_id}</span>${content}</p>
@@ -98,6 +118,7 @@ function getFeed() {
                     }
 
                 }
+
                 for (let x = 0; x < comments.length; x++) {
                     if (feed_idx === comments[x]['feed_idx']) {
                         let writer = comments[x]['writer_id'];
@@ -109,6 +130,7 @@ function getFeed() {
                         $('#comment_list'+i).append(temp_comment);
                     }
                 }
+
             }
         }
     })
