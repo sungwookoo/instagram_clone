@@ -1,19 +1,12 @@
 import os
-import datetime
-
 from flask import Flask, render_template, jsonify, request, redirect, url_for
-from pymongo import MongoClient
 import jwt
 import hashlib
+from werkzeug.utils import secure_filename
 import config
-from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
-
 import datetime
 
-import datetime
-
-# import db_config
 app = Flask(__name__)
 
 # DB
@@ -92,6 +85,12 @@ def profile():
     return render_template('profile.html')
 
 
+@app.route('/main')
+def main():
+    return render_template('main.html')
+
+
+# 보니까 이 두개 합쳐야함.. ㄷㄷ..
 # 파일 전송하기(POST)
 @app.route('/api/upload', methods=['get', 'POST'])
 def upload_file():
@@ -99,8 +98,8 @@ def upload_file():
         file = request.files['file']
         content = request.form['content']
         filename = secure_filename(file.filename)
-        file.save(os.path.join('static', 'uploads', filename))
-        feed_img_src = os.path.join('static', 'uploads', filename)
+        file.save(os.path.join('static','uploads',filename))
+        feed_img_src = os.path.join('static','uploads',filename)
         created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
         doc = {
@@ -121,7 +120,6 @@ def objectIdToString(find_list):
         i['_id'] = str(i['_id'])
         results.append(i)
     return results
-
 
 @app.route('/api/feed', methods=['GET'])
 def get_feed():
@@ -153,25 +151,6 @@ def save_comment():
     }
 
     db.comment.insert_one(doc)
-
-    return jsonify({'msg': '댓글이 작성되었습니다.'})
-
-# 댓글 작성(POST) API
-@app.route('/api/comment', methods=['POST'])
-def save_comment():
-    writer_receive = request.form['writer_id']
-    content_receive = request.form['content']
-    feed_idx = request.form['feed_idx']
-    created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-
-    doc = {
-        'writer_id': writer_receive,
-        'feed_idx': feed_idx,
-        'content': content_receive,
-        'created_at': created_at
-    }
-
-    db.comments.insert_one(doc)
 
     return jsonify({'msg': '댓글이 작성되었습니다.'})
 
