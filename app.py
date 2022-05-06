@@ -30,6 +30,7 @@ def main():
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
+        content = request.form['content']
         filename = secure_filename(file.filename)
         file.save(os.path.join('static','uploads',filename))
         feed_img_src = os.path.join('static','uploads',filename)
@@ -38,28 +39,13 @@ def upload_file():
         doc = {
             'user_id': 'testId0',
             'feed_img_src': feed_img_src,
-            'content': '테스트 용',
+            'content': content,
             'created_at': created_at
         }
 
         db.feed.insert_one(doc)
         return redirect(url_for('main'))
 
-# 피드 작성(POST) API
-# @app.route('/api/feed', methods=['POST'])
-# def save_feed():
-#     user_id_receive = request.form['user_id']
-#     created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-#     feed_img_src = upload_file()
-#     doc = {
-#         'user_id': user_id_receive,
-#         'created_at': created_at,
-#         'feed_img_src': feed_img_src
-#     }
-#
-#     db.feed.insert_one(doc)
-#
-#     return jsonify({'msg': '작성되었습니다.'})
 
 # id를 문자열로 바꾸는 함수
 def objectIdToString(find_list):
@@ -73,29 +59,32 @@ def objectIdToString(find_list):
 def get_feed():
     users = list(db.users.find({}))
     feeds = list(db.feed.find({}))
+    comments = list(db.comment.find({}))
     feeds = objectIdToString(feeds)
     users = objectIdToString(users)
+    comments = objectIdToString(comments)
     return jsonify({'all_users': users,
-                    'all_feeds': feeds
+                    'all_feeds': feeds,
+                    'all_comments': comments
                     })
 
 
 # 댓글 작성(POST) API
 @app.route('/api/comment', methods=['POST'])
 def save_comment():
-    writer_receive = request.form['writer_id']
+    # id는 로그인기능받아오면 하고
     content_receive = request.form['content']
     feed_idx = request.form['feed_idx']
     created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
     doc = {
-        'writer_id': writer_receive,
+        'writer_id': 'testId0',
         'feed_idx': feed_idx,
         'content': content_receive,
         'created_at': created_at
     }
 
-    db.comments.insert_one(doc)
+    db.comment.insert_one(doc)
 
     return jsonify({'msg': '댓글이 작성되었습니다.'})
 

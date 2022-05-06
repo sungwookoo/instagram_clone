@@ -4,8 +4,8 @@ $(document).ready(function () {
 
 
 // 댓글 작성(POST) API
-function saveComment() {
-    let content = $('#comment_content').val()
+function saveComment(i, feed_idx) {
+    let content = $('#input-comment'+i).val()
     if (content === '') {
         alert("입력하지 않은 항목이 존재합니다.");
         return;
@@ -13,7 +13,7 @@ function saveComment() {
     $.ajax({
             type: "POST",
             url: "/api/comment",
-            data: {content: content, write_id: write_id, feed_idx: feed_idx},
+            data: {content: content, feed_idx: feed_idx},
             success: function (response) {
                 alert(response["msg"]);
                 window.location.reload();
@@ -76,7 +76,7 @@ function getFeed() {
                         <p><span class="point-span">hwi_ssu</span>님 <span class="point-span">외 2,412,751명</span>이 좋아합니다</p>
                     </div>
                     <div class="description">
-                        <p><span class="point-span userID">dlwlrma</span>${content}</p>
+                        <p><span class="point-span userID">${user_id}</span>${content}</p>
                     </div>
                     <div class="comment-section">
                         <ul class="comments" id="comment_list${i}">
@@ -90,7 +90,7 @@ function getFeed() {
                 <div class="hl"></div>
                 <div class="comment">
                     <input id="input-comment${i}" class="input-comment" type="text" placeholder="댓글 달기...">
-                    <button type="submit" class="submit-comment" disabled>게시</button>
+                    <button type="submit" class="submit-comment" onclick="saveComment('${i}', '${feed_idx}')">게시</button>
                 </div>
             </article>`
                         $('#feeds').append(temp_html);
