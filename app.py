@@ -32,6 +32,11 @@ def home():
         return render_template('login.html')
 
 
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+
 @app.route('/login')
 def login():
     msg = request.args.get('msg')
@@ -98,8 +103,8 @@ def upload_file():
         file = request.files['file']
         content = request.form['content']
         filename = secure_filename(file.filename)
-        file.save(os.path.join('static','uploads',filename))
-        feed_img_src = os.path.join('static','uploads',filename)
+        file.save(os.path.join('static', 'uploads', filename))
+        feed_img_src = os.path.join('static', 'uploads', filename)
         created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
         doc = {
@@ -120,6 +125,7 @@ def objectIdToString(find_list):
         i['_id'] = str(i['_id'])
         results.append(i)
     return results
+
 
 @app.route('/api/feed', methods=['GET'])
 def get_feed():
