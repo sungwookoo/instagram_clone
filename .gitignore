@@ -1,4 +1,6 @@
 venv/
 .vscode/
 .idea/
-db_config.py
+*.pyc
+uploads/
+config.py

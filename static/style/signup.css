@@ -1,6 +1,6 @@
 .container {
     width: 360px;
-    height: 380px;
+    height: 390px;
     margin: 130px auto 10px;
     display: flex;
     flex-direction: column;
@@ -44,7 +44,7 @@ img.logo_instagram {
     border: 1px solid #8a8a8a;
     outline: none;
 }
-#btn_login {
+#btn_signup {
     width: 268px;
     height: 30px;
     margin: 13px auto;
@@ -55,16 +55,16 @@ img.logo_instagram {
     font-size: 14px;
     font-weight: 600;
 }
-#btn_login:disabled {
+#btn_signup:disabled {
     background-color: #B9DFFC;
 }
-#btn_login:disabled:hover {
+#btn_signup:disabled:hover {
     cursor: default;
 }
-#btn_login:enabled:hover {
+#btn_signup:enabled:hover {
     cursor: pointer;
 }
-#btn_login:focus {
+#btn_signup:focus {
     outline: none;
 }
 a {
