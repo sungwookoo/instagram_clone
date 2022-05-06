@@ -2,10 +2,11 @@ $(document).ready(function () {
     getFeed();
 })
 
+// 댓글 좋아요
 
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
-    let content = $('#input-comment'+i).val()
+    let content = $('#input-comment' + i).val()
     if (content === '') {
         alert("입력하지 않은 항목이 존재합니다.");
         return;
@@ -106,7 +107,7 @@ function getFeed() {
                             `<li>
                                 <span><span class="point-span userID">${writer}</span>${comment_content}</span>
                             </li>`
-                        $('#comment_list'+i).append(temp_comment);
+                        $('#comment_list' + i).append(temp_comment);
                     }
                 }
             }
