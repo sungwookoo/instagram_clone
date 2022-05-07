@@ -3,6 +3,30 @@ $(document).ready(function () {
 
 })
 
+function content_more(){
+    let content = $('.content');
+    let content_txt = content.text();
+    let content_txt_short = content_txt.substring(0, 20) + "..." + `<a href="javascript:void(0)" class="more">더보기</a>`;
+
+    if (content_txt.length >= 20) {
+        $('.content').html(content_txt_short);
+
+    $('.more').click(toggle_content);
+    function toggle_content(){
+                if($(this).hasClass('short')){
+                    // 접기 상태
+                    $(this).html('더보기');
+                    content.html(content_txt_short)
+                    $(this).removeClass('short');
+                }else{
+                    // 더보기 상태
+                    $(this).html('접기');
+                    content.html(content_txt);
+                    $(this).addClass('short');
+
+                }
+            }
+}}
 
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
@@ -96,7 +120,7 @@ function getFeed() {
                         <p><span class="point-span">좋아요</span> <span class="point-span">${like_count}개</span></p>
                     </div>
                     <div class="description">
-                        <p><span class="point-span userID">${user_id}</span>${content}</p>
+                        <p><span class="point-span userID">${user_id}</span><span class="content">${content}</span></p>
                     </div>
                     <div class="comment-section">
                         <ul class="comments" id="comment_list${i}">
@@ -127,9 +151,10 @@ function getFeed() {
                             `<li>
                                 <span><span class="point-span userID">${writer}</span>${comment_content}</span>
                             </li>`
-                        $('#comment_list'+i).append(temp_comment);
+                        $('#comment_list' + i).append(temp_comment);
                     }
                 }
+            content_more()
 
             }
         }
