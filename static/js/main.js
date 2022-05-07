@@ -3,30 +3,12 @@ $(document).ready(function () {
 
 })
 
-function content_more(){
-    let content = $('.content');
-    let content_txt = content.text();
-    let content_txt_short = content_txt.substring(0, 20) + "..." + `<a href="javascript:void(0)" class="more">더보기</a>`;
+// 더보기
+function viewmore(i, content) {
+    $('.mycontent'+i).html(content)
+}
 
-    if (content_txt.length >= 20) {
-        $('.content').html(content_txt_short);
 
-    $('.more').click(toggle_content);
-    function toggle_content(){
-                if($(this).hasClass('short')){
-                    // 접기 상태
-                    $(this).html('더보기');
-                    content.html(content_txt_short)
-                    $(this).removeClass('short');
-                }else{
-                    // 더보기 상태
-                    $(this).html('접기');
-                    content.html(content_txt);
-                    $(this).addClass('short');
-
-                }
-            }
-}}
 
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
@@ -120,7 +102,7 @@ function getFeed() {
                         <p><span class="point-span">좋아요</span> <span class="point-span">${like_count}개</span></p>
                     </div>
                     <div class="description">
-                        <p><span class="point-span userID">${user_id}</span><span class="content">${content}</span></p>
+                        <div><span class="point-span userID">${user_id}</span><span class="mycontent${i}">${content}</span></div>
                     </div>
                     <div class="comment-section">
                         <ul class="comments" id="comment_list${i}">
@@ -154,10 +136,15 @@ function getFeed() {
                         $('#comment_list' + i).append(temp_comment);
                     }
                 }
-            content_more()
 
-            }
+                    let content_txt = $('.mycontent').text();
+                    let content_txt_short = content_txt.substring(0, 30) + "..." + `<a href="javascript:void(0)" class="more" onclick="viewmore('${i}', '${content}')">더보기</a>`;
+
+                    if (content.length >= 30) {
+                        $('.mycontent'+i).html(content_txt_short);
+                        }
         }
-    })
+    }
+})
 }
 

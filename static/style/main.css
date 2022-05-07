@@ -221,7 +221,6 @@ header {
 .description {
     display: flex;
     align-items: center;
-    height: 18px;
 }
 span.at-tag {
     color: #00376B;
@@ -230,7 +229,6 @@ ul.comments {
     margin-top: 5px;
 }
 ul.comments li {
-    height: 21px;
     display: flex;
     justify-content: space-between;
     color: #262626;
