@@ -131,16 +131,21 @@ def objectIdToString(find_list):
 def get_feed():
     users = list(db.users.find({}))
     feeds = list(db.feed.find({}))
-    comments = list(db.comment.find({}))
     likes = list(db.like.find({}))
     feeds = objectIdToString(feeds)
     users = objectIdToString(users)
-    comments = objectIdToString(comments)
     likes = objectIdToString(likes)
     return jsonify({'all_users': users,
                     'all_feeds': feeds,
-                    'all_comments': comments,
                     'all_likes': likes
+                    })
+
+@app.route('/api/comment', methods=['GET'])
+def get_comment():
+    comments = list(db.comment.find({}))
+    comments = objectIdToString(comments)
+    return jsonify({
+                    'all_comments': comments
                     })
 
 

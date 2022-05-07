@@ -8,7 +8,27 @@ function viewmore(i, content) {
     $('.mycontent'+i).html(content)
 }
 
+// 댓글 더보기 modal
+function commentmore(i, feed_idx){
+    $.ajax({
+        type: "GET",
+        url: "/api/comment",
+        data: {},
+        success: function (response) {
+            let comments = response['all_comments'];
 
+            for (let x = 0; x < comments.length; x++) {
+                if (feed_idx === comments[x]['feed_idx']) {
+                    let writer = comments[x]['writer_id'];
+                    let comment_content = comments[x]['content'];
+                    let temp_comment =
+                        `<li>
+                            <span><span class="point-span userID">${writer}</span>${comment_content}</span>
+                        </li>`
+                    $('#modalcomment'+i).append(temp_comment);
+                }
+            }
+}})}
 
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
@@ -61,6 +81,10 @@ function getFeed() {
                 let user_id = feeds[i]['user_id'];
                 let feed_idx = feeds[i]['_id'];
                 let like_count = 0;
+                let comment_basic =
+                    `<button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" >
+                        댓글 더보기
+                    </button>`
                 for (let k = 0; k < likes.length; k++) {
                     if (likes[k]['feed_idx']===feed_idx) {
                         like_count++
@@ -105,8 +129,8 @@ function getFeed() {
                         <div><span class="point-span userID">${user_id}</span><span class="mycontent${i}">${content}</span></div>
                     </div>
                     <div class="comment-section">
-                        <ul class="comments" id="comment_list${i}">
-                            <!-- input 값 여기에 추가 -->
+                        <ul class="comments">
+                            ${comment_basic}
                         </ul>
                         <div class="time-log">
                             <span>${created_at}</span>
@@ -125,17 +149,6 @@ function getFeed() {
 
                 }
 
-                for (let x = 0; x < comments.length; x++) {
-                    if (feed_idx === comments[x]['feed_idx']) {
-                        let writer = comments[x]['writer_id'];
-                        let comment_content = comments[x]['content'];
-                        let temp_comment =
-                            `<li>
-                                <span><span class="point-span userID">${writer}</span>${comment_content}</span>
-                            </li>`
-                        $('#comment_list' + i).append(temp_comment);
-                    }
-                }
 
                     let content_txt = $('.mycontent').text();
                     let content_txt_short = content_txt.substring(0, 30) + "..." + `<a href="javascript:void(0)" class="more" onclick="viewmore('${i}', '${content}')">더보기</a>`;
@@ -143,6 +156,29 @@ function getFeed() {
                     if (content.length >= 30) {
                         $('.mycontent'+i).html(content_txt_short);
                         }
+                let modal_html =
+                    `<!-- Modal -->
+<div class="modal fade" id="exampleModal${i}" tabindex="-1" aria-labelledby="exampleModalLabel${i}" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel${i}">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" onclick="commentmore('${i}','${feed_idx}')">더보기</button>
+        <ul id="modalcomment${i}">
+        
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>`
+                $('#modals').append(modal_html);
         }
     }
 })
