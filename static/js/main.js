@@ -5,71 +5,58 @@ $(document).ready(function () {
 
 // 더보기
 function viewmore(i, content) {
-    $('.mycontent'+i).html(content)
+    $('.mycontent' + i).html(content)
 }
 
 // 댓글 더보기 modal
-function commentmore(i, feed_idx){
+function commentmore(i, feed_idx) {
     $.ajax({
-        type: "GET",
-        url: "/api/comment",
-        data: {},
-        success: function (response) {
+        type: "GET", url: "/api/comment", data: {}, success: function (response) {
             let comments = response['all_comments'];
 
             for (let x = 0; x < comments.length; x++) {
                 if (feed_idx === comments[x]['feed_idx']) {
                     let writer = comments[x]['writer_id'];
                     let comment_content = comments[x]['content'];
-                    let temp_comment =
-                        `<li>
+                    let temp_comment = `<li>
                             <span><span class="point-span userID">${writer}</span>${comment_content}</span>
                         </li>`
-                    $('#modalcomment'+i).append(temp_comment);
+                    $('#modalcomment' + i).append(temp_comment);
                 }
             }
-}})}
+        }
+    })
+}
 
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
-    let content = $('#input-comment'+i).val()
+    let content = $('#input-comment' + i).val()
     if (content === '') {
         alert("입력하지 않은 항목이 존재합니다.");
         return;
     }
     $.ajax({
-            type: "POST",
-            url: "/api/comment",
-            data: {content: content, feed_idx: feed_idx},
-            success: function (response) {
-                alert(response["msg"]);
-                window.location.reload();
-            }
+        type: "POST", url: "/api/comment", data: {content: content, feed_idx: feed_idx}, success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
         }
-    )
+    })
 }
 
 // 좋아요 기능(POST) API
 function saveLike(feed_idx) {
     $.ajax({
-            type: "POST",
-            url: "/api/like",
-            data: {feed_idx: feed_idx},
-            success: function (response) {
-                alert(response["msg"]);
-                window.location.reload();
-            }
+        type: "POST", url: "/api/like", data: {feed_idx: feed_idx}, success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
         }
-    )
+    })
 }
 
 // 피드 작성(GET) API
 function getFeed() {
     $.ajax({
-        type: "GET",
-        url: "/api/feed",
-        data: {},
-        success: function (response) {
+        type: "GET", url: "/api/feed", data: {}, success: function (response) {
             let users = response['all_users'];
             let feeds = response['all_feeds'];
             let likes = response['all_likes'];
@@ -81,12 +68,11 @@ function getFeed() {
                 let user_id = feeds[i]['user_id'];
                 let feed_idx = feeds[i]['_id'];
                 let like_count = 0;
-                let comment_basic =
-                    `<button type="button" class="morebutton" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" onclick="commentmore('${i}','${feed_idx}')">
+                let comment_basic = `<button type="button" class="morebutton" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" onclick="commentmore('${i}','${feed_idx}')">
                         <p class="toseemore"> 댓글 더보기 </p>
                     </button>`
                 for (let k = 0; k < likes.length; k++) {
-                    if (likes[k]['feed_idx']===feed_idx) {
+                    if (likes[k]['feed_idx'] === feed_idx) {
                         like_count++
                     }
 
@@ -94,8 +80,7 @@ function getFeed() {
                 for (let j = 0; j < users.length; j++) {
                     if (user_id === users[j]['user_id']) {
                         let profile_img_src = users[j]['profile_img_src'];
-                        let temp_html =
-                            `<article>
+                        let temp_html = `<article>
                 <header>
                     <div class="profile-of-article">
                         <img class="img-profile pic"
@@ -103,9 +88,11 @@ function getFeed() {
                              alt="">
                         <span class="userID main-id point-span">${user_id}</span>
                     </div>
-                    <img class="icon-react icon-more"
-                         src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">
-                </header>
+                        <button type="button" class="feedadd" data-bs-toggle="modal" data-bs-target="#exampleModal${i + 10000}">
+                            <img class="icon-react icon-more"
+                             src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">               
+                        </button>
+                    </header>
                 <div class="main-image">
                     <img src="${feed_img_src}"
                          alt="" class="mainPic">
@@ -152,14 +139,32 @@ function getFeed() {
                 }
 
 
-                    let content_txt = $('.mycontent').text();
-                    let content_txt_short = content_txt.substring(0, 30) + "..." + `<a href="javascript:void(0)" class="more" onclick="viewmore('${i}', '${content}')">더보기</a>`;
+                let content_txt = $('.mycontent').text();
+                let content_txt_short = content_txt.substring(0, 30) + "..." + `<a href="javascript:void(0)" class="more" onclick="viewmore('${i}', '${content}')">더보기</a>`;
 
-                    if (content.length >= 30) {
-                        $('.mycontent'+i).html(content_txt_short);
-                        }
-                let modal_html =
-                    `<!-- Modal -->
+                if (content.length >= 30) {
+                    $('.mycontent' + i).html(content_txt_short);
+                }
+                let modal2_html =
+                    `<div class="modal fade" id="exampleModal${i + 10000}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel${i + 10000}">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            인스타 모달 어캐만들지.
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    `
+                $('#modals').append(modal2_html);
+                let modal_html = `<!-- Modal -->
 <div class="modal fade" id="exampleModal${i}" tabindex="-1" aria-labelledby="exampleModalLabel${i}" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -179,8 +184,9 @@ function getFeed() {
   </div>
 </div>`
                 $('#modals').append(modal_html);
+
+            }
         }
-    }
-})
+    })
 }
 

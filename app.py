@@ -99,24 +99,24 @@ def main():
 # 파일 전송하기(POST)
 @app.route('/api/upload', methods=['get', 'POST'])
 def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        content = request.form['content']
-        filename = secure_filename(file.filename)
-        file.save(os.path.join('static', 'uploads', filename))
-        feed_img_src = os.path.join('static', 'uploads', filename)
-        created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    if request.files['file']:
+        if request.method == 'POST':
+            file = request.files['file']
+            content = request.form['content']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('static', 'uploads', filename))
+            feed_img_src = os.path.join('static', 'uploads', filename)
+            created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
-        doc = {
-            'user_id': 'testId0',
-            'feed_img_src': feed_img_src,
-            'content': content,
-            'created_at': created_at
-        }
+            doc = {
+                'user_id': 'testId0',
+                'feed_img_src': feed_img_src,
+                'content': content,
+                'created_at': created_at
+            }
 
-        db.feed.insert_one(doc)
-        return redirect(url_for('main'))
-
+            db.feed.insert_one(doc)
+            return redirect(url_for('main'))
 
 # id를 문자열로 바꾸는 함수
 def objectIdToString(find_list):
