@@ -72,9 +72,9 @@ function getFeed() {
         success: function (response) {
             let users = response['all_users'];
             let feeds = response['all_feeds'];
-            let comments = response['all_comments'];
             let likes = response['all_likes'];
-            for (let i = 0; i < feeds.length; i++) {
+            let feed = feeds.reverse()
+            for (let i = 0; i < feed.length; i++) {
                 let created_at = feeds[i]['created_at'];
                 let content = feeds[i]['content'];
                 let feed_img_src = feeds[i]['feed_img_src'];
@@ -82,8 +82,8 @@ function getFeed() {
                 let feed_idx = feeds[i]['_id'];
                 let like_count = 0;
                 let comment_basic =
-                    `<button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" >
-                        댓글 더보기
+                    `<button type="button" class="morebutton" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" onclick="commentmore('${i}','${feed_idx}')">
+                        <p class="toseemore"> 댓글 더보기 </p>
                     </button>`
                 for (let k = 0; k < likes.length; k++) {
                     if (likes[k]['feed_idx']===feed_idx) {
@@ -112,7 +112,9 @@ function getFeed() {
                 </div>
                 <div class="icons-react">
                     <div class="icons-left">
-                        <button class="like_button" onclick="saveLike('${feed_idx}')"></button>
+                        <button class="like_button" onclick="saveLike('${feed_idx}')">
+                        <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png">
+</button>
                         <img class="icon-react"
                              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png" alt="말풍선">
                         <img class="icon-react" src="../static/img/dm.png" alt="DM">
@@ -166,14 +168,12 @@ function getFeed() {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <button type="button" onclick="commentmore('${i}','${feed_idx}')">더보기</button>
         <ul id="modalcomment${i}">
         
         </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
