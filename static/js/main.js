@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     getFeed();
 
@@ -36,7 +37,7 @@ function saveComment(i, feed_idx) {
         return;
     }
     $.ajax({
-        type: "POST", url: "/api/comment", data: {content: content, feed_idx: feed_idx}, success: function (response) {
+        type: "POST", url: "/api/comment", data: {content: content, feed_idx: feed_idx, user_id: current_user_id}, success: function (response) {
             alert(response["msg"]);
             window.location.reload();
         }
@@ -46,7 +47,7 @@ function saveComment(i, feed_idx) {
 // 좋아요 기능(POST) API
 function saveLike(feed_idx) {
     $.ajax({
-        type: "POST", url: "/api/like", data: {feed_idx: feed_idx}, success: function (response) {
+        type: "POST", url: "/api/like", data: {feed_idx: feed_idx, user_id: current_user_id}, success: function (response) {
             alert(response["msg"]);
             window.location.reload();
         }

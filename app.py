@@ -95,7 +95,6 @@ def main():
     return render_template('main.html')
 
 
-# 보니까 이 두개 합쳐야함.. ㄷㄷ..
 # 파일 전송하기(POST)
 @app.route('/api/upload', methods=['get', 'POST'])
 def upload_file():
@@ -103,13 +102,14 @@ def upload_file():
         if request.method == 'POST':
             file = request.files['file']
             content = request.form['content']
+            user_id = request.form['user_id']
             filename = secure_filename(file.filename)
             file.save(os.path.join('static', 'uploads', filename))
             feed_img_src = os.path.join('static', 'uploads', filename)
             created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
             doc = {
-                'user_id': 'testId0',
+                'user_id': user_id,
                 'feed_img_src': feed_img_src,
                 'content': content,
                 'created_at': created_at
@@ -117,6 +117,7 @@ def upload_file():
 
             db.feed.insert_one(doc)
             return redirect(url_for('main'))
+
 
 # id를 문자열로 바꾸는 함수
 def objectIdToString(find_list):
@@ -140,25 +141,25 @@ def get_feed():
                     'all_likes': likes
                     })
 
+
 @app.route('/api/comment', methods=['GET'])
 def get_comment():
     comments = list(db.comment.find({}))
     comments = objectIdToString(comments)
     return jsonify({
-                    'all_comments': comments
-                    })
+        'all_comments': comments
+    })
 
 
 # 댓글 작성(POST) API
 @app.route('/api/comment', methods=['POST'])
 def save_comment():
-    # id는 로그인기능받아오면 하고
     content_receive = request.form['content']
     feed_idx = request.form['feed_idx']
     created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-
+    user_id = request.form['user_id']
     doc = {
-        'writer_id': 'testId0',
+        'writer_id': user_id,
         'feed_idx': feed_idx,
         'content': content_receive,
         'created_at': created_at
@@ -172,21 +173,20 @@ def save_comment():
 # 좋아요(POST) API
 @app.route('/api/like', methods=['POST'])
 def like():
-    # user_id는 로그인기능에서 받아오면 제대로 수정.
-    user_id = 'testId0'
+    user_id = request.form['user_id']
     created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     likes = list(db.like.find({}))
     feed_idx = request.form['feed_idx']
-    count=0
+    count = 0
     for i in range(len(likes)):
-        if likes[i]['feed_idx']==feed_idx:
-            if likes[i]['user_id']==user_id:
-                count+=1
+        if likes[i]['feed_idx'] == feed_idx:
+            if likes[i]['user_id'] == user_id:
+                count += 1
     if count == 1:
         db.like.delete_one({'user_id': user_id})
     else:
         doc = {
-            'user_id': 'testId0',
+            'user_id': user_id,
             'feed_idx': feed_idx,
             'created_at': created_at
         }
