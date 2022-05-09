@@ -246,12 +246,23 @@ def save_repost():
             db.feed.insert_one(doc)
     return jsonify({'msg': '리포스트 완료.'})
 
+# 게시물 삭제
 @app.route('/api/removefeed', methods=['POST'])
 def remove_feed():
     feed_idx = request.form['feed_idx']
     db.feed.delete_one({'_id': ObjectId(feed_idx)})
 
     return jsonify({'msg': '게시물이 삭제 되었습니다.'})
+
+# 프로필 이미지 get
+@app.route('/api/profileimg', methods=['GET'])
+def get_profile():
+    users = list(db.users.find({}))
+    users = objectIdToString(users)
+    return jsonify({
+        'all_users': users
+    })
+
 
 
 if __name__ == '__main__':

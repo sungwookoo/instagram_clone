@@ -1,5 +1,6 @@
 $(document).ready(function () {
     getFeed();
+    getprofile();
 })
 
 function logout() {
@@ -18,6 +19,37 @@ function logout() {
             }
         }
     })
+}
+
+// 프로필 이미지 넣기
+function getprofile() {
+    $.ajax({
+        type: "GET", url: "/api/profileimg", data: {}, success: function (response) {
+            let users = response['all_users'];
+            console.log(users)
+            for (let i = 0; i < users.length; i++) {
+                console.log("bbb")
+                if (current_user_id === users[i]['user_id']) {
+                    console.log('ccc')
+                    let profile_img = users[i]['profile_img_src'];
+                    let name = users[i]['name'];
+                    let temp_profile = `
+                    <img class="img-profile pic" src="${profile_img}" alt="프로필">
+                    `
+                    $('#profileimg').append(temp_profile);
+                    let temp_profile2 =`
+                    <img class="pic"
+                 src="${profile_img}"
+                 alt="kusungwoo님의 프로필 사진">
+            <div>
+                <span class="userID point-span">${current_user_id}</span>
+                <span class="sub-span">${name}</span>
+            </div>
+                    `
+                    $('#myProfile').append(temp_profile2);
+                }
+        }
+    }})
 }
 
 // 더보기

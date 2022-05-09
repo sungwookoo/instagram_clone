@@ -41,10 +41,19 @@
             </button>
 
             <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
-            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트" onclick="logout()" style="cursor:pointer">
-            <a href="/profile"><img class="pic" style="cursor:pointer"
-                 src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2"
-                 alt="마이페이지"></a>
+            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트"
+                 onclick="logout()" style="cursor:pointer">
+            <div class="dropdown">
+                <button class="feedadd" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <div id="profileimg"></div>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="/profile">프로필</a></li>
+                    <li><a class="dropdown-item" href="#">로그 아웃</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
@@ -56,14 +65,8 @@
     </div>
     <!-- main-right -->
     <div class="main-right">
-        <div class="myProfile">
-            <img class="pic"
-                 src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2"
-                 alt="kusungwoo님의 프로필 사진">
-            <div>
-                <span class="userID point-span">kusungwoo</span>
-                <span class="sub-span">구성우</span>
-            </div>
+        <div class="myProfile" id="myProfile">
+
         </div>
         <!-- story section -->
         <div class="section-story">
