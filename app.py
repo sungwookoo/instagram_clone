@@ -1,4 +1,6 @@
 import os
+
+from bson import ObjectId
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 import jwt
 import hashlib
@@ -19,28 +21,47 @@ db = client.dbinsta
 SECRET_KEY = config.Config.SECRET_KEY
 
 
-@app.route('/')
-def home():
+def check_token(html):
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user = db.users.find_one({'user_id': payload['id']})
-        return render_template('main.html', user_id=user["user_id"])
+        if user is not None:
+            if html == 'login.html' or html == 'signup.html':
+                return redirect(url_for('main'))
+
+            return render_template(html, user_id=user['user_id'])
     except jwt.ExpiredSignatureError:
-        return redirect(url_for('login'))
+        return render_template('login.html', msg='로그인 만료')
     except jwt.exceptions.DecodeError:
+        if html == 'signup.html':
+            return render_template('signup.html')
         return render_template('login.html')
+
+
+@app.route('/')
+def home():
+    return check_token('main.html')
+
+
+@app.route('/main')
+def main():
+    return check_token('main.html')
 
 
 @app.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return check_token('signup.html')
 
 
 @app.route('/login')
 def login():
-    msg = request.args.get('msg')
-    return render_template('login.html')
+    return check_token('login.html')
+
+
+@app.route('/profile')
+def profile():
+    return check_token('profile.html')
 
 
 @app.route('/api/register', methods=['POST'])
@@ -74,7 +95,7 @@ def login_proc():
 
     if user is not None:
         payload = {'id': user_id,
-                   'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)}
+                   'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=1800)}
 
         return jsonify({
             'result': 'success',
@@ -85,14 +106,22 @@ def login_proc():
         return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호가 일치하지 않습니다.'})
 
 
-@app.route('/profile')
-def profile():
-    return render_template('profile.html')
-
-
-@app.route('/main')
-def main():
-    return render_template('main.html')
+# 로그아웃 API
+@app.route("/api/logout", methods=['GET'])
+def logout_proc():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        return jsonify({
+            'result': 'success',
+            'token': jwt.encode(payload, SECRET_KEY, algorithm='HS256'),
+            'msg': '로그아웃 성공'
+        })
+    except jwt.ExpiredSignatureError or jwt.exceptions.DecodeError:
+        return jsonify({
+            'result': 'fail',
+            'msg': '로그아웃 실패'
+        })
 
 
 # 파일 전송하기(POST)
@@ -116,7 +145,7 @@ def upload_file():
             }
 
             db.feed.insert_one(doc)
-            return redirect(url_for('main'))
+            return redirect(url_for('login'))
 
 
 # id를 문자열로 바꾸는 함수
