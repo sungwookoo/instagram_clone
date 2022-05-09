@@ -103,8 +103,10 @@ def upload_file():
         file = request.files['file']
         content = request.form['content']
         filename = secure_filename(file.filename)
+        print(filename)
         file.save(os.path.join('static', 'uploads', filename))
         feed_img_src = os.path.join('static', 'uploads', filename)
+        print(feed_img_src)
         created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
         doc = {
@@ -116,6 +118,8 @@ def upload_file():
 
         db.feed.insert_one(doc)
         return redirect(url_for('main'))
+
+
 
 
 # id를 문자열로 바꾸는 함수
