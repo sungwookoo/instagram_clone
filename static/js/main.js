@@ -60,6 +60,24 @@ function repost(feed_idx) {
     })
 }
 
+// 게시물 삭제
+function removefeed(feed_idx, user_id) {
+    console.log(current_user_id, user_id)
+    console.log(feed_idx)
+    if (user_id === current_user_id) {
+        $.ajax({
+            type: "POST",
+            url: "/api/removefeed",
+            data: {feed_idx: feed_idx},
+            success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
+            }
+        })
+    }
+    else {
+        alert("자신의 게시물만 삭제할 수 있습니다.");
+}}
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
     let content = $('#input-comment' + i).val()
@@ -193,7 +211,7 @@ function getFeed() {
   </button>
   <button type="button" class="list-group-item list-group-item-action" onclick="repost('${feed_idx}')">리포스트</button>
   <button type="button" class="list-group-item list-group-item-action">팔로우 취소</button>
-  <button type="button" class="list-group-item list-group-item-action">게시물 삭제</button>
+  <button type="button" class="list-group-item list-group-item-action" onclick="removefeed('${feed_idx}', '${user_id}')">게시물 삭제</button>
   <button type="button" class="list-group-item list-group-item-action" data-bs-dismiss="modal">취소</button>
 </div>
                         </div>

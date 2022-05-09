@@ -246,6 +246,13 @@ def save_repost():
             db.feed.insert_one(doc)
     return jsonify({'msg': '리포스트 완료.'})
 
+@app.route('/api/removefeed', methods=['POST'])
+def remove_feed():
+    feed_idx = request.form['feed_idx']
+    db.feed.delete_one({'_id': ObjectId(feed_idx)})
+
+    return jsonify({'msg': '게시물이 삭제 되었습니다.'})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
