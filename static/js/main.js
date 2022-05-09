@@ -1,5 +1,7 @@
 $(document).ready(function () {
     getFeed();
+    getprofile();
+    getRecommend();
 })
 
 function logout() {
@@ -20,6 +22,34 @@ function logout() {
     })
 }
 
+// 프로필 이미지 넣기
+function getprofile() {
+    $.ajax({
+        type: "GET", url: "/api/profileimg", data: {}, success: function (response) {
+            let users = response['all_users'];
+            for (let i = 0; i < users.length; i++) {
+                if (current_user_id === users[i]['user_id']) {
+                    let profile_img = users[i]['profile_img_src'];
+                    let name = users[i]['name'];
+                    let temp_profile = `
+                    <img class="img-profile pic" src="${profile_img}" alt="프로필">
+                    `
+                    $('#profileimg').append(temp_profile);
+                    let temp_profile2 =`
+                    <img class="pic"
+                 src="${profile_img}"
+                 alt="kusungwoo님의 프로필 사진">
+            <div>
+                <span class="userID point-span">${current_user_id}</span>
+                <span class="sub-span">${name}</span>
+            </div>
+                    `
+                    $('#myProfile').append(temp_profile2);
+                }
+        }
+    }})
+}
+
 // 더보기
 function viewmore(i, content) {
     $('.mycontent' + i).html(content)
@@ -27,6 +57,7 @@ function viewmore(i, content) {
 
 // 댓글 더보기 modal
 function commentmore(i, feed_idx) {
+    $( 'li' ).remove();
     $.ajax({
         type: "GET", url: "/api/comment", data: {}, success: function (response) {
             let comments = response['all_comments'];
@@ -45,6 +76,35 @@ function commentmore(i, feed_idx) {
     })
 }
 
+// 리포스트
+function repost(feed_idx) {
+    $.ajax({
+        type: "POST",
+        url: "/api/repost",
+        data: {feed_idx: feed_idx, user_id: current_user_id},
+        success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
+        }
+    })
+}
+
+// 게시물 삭제
+function removefeed(feed_idx, user_id) {
+    if (user_id === current_user_id) {
+        $.ajax({
+            type: "POST",
+            url: "/api/removefeed",
+            data: {feed_idx: feed_idx},
+            success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
+            }
+        })
+    }
+    else {
+        alert("자신의 게시물만 삭제할 수 있습니다.");
+}}
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
     let content = $('#input-comment' + i).val()
@@ -172,16 +232,15 @@ function getFeed() {
                     `<div class="modal fade" id="exampleModal${i + 10000}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel${i + 10000}">Modal title</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            인스타 모달 어캐만들지.
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          </div>
+                                                      <div class="list-group">
+  <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
+    신고하기
+  </button>
+  <button type="button" class="list-group-item list-group-item-action" onclick="repost('${feed_idx}')">리포스트</button>
+  <button type="button" class="list-group-item list-group-item-action">팔로우 취소</button>
+  <button type="button" class="list-group-item list-group-item-action" onclick="removefeed('${feed_idx}', '${user_id}')">게시물 삭제</button>
+  <button type="button" class="list-group-item list-group-item-action" data-bs-dismiss="modal">취소</button>
+</div>
                         </div>
                       </div>
                     </div>
@@ -192,7 +251,7 @@ function getFeed() {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel${i}">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel${i}">${user_id} 게시물의 댓글</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -213,3 +272,39 @@ function getFeed() {
     })
 }
 
+// 추천 리스트
+function getRecommend() {
+    $.ajax({
+        type: "GET", url: "/api/recommend", data: {}, success: function (response) {
+            let users = response['all_users'];
+            // 팔로워 생기면 추가
+            for (let i = 0; i < users.length; i++) {
+                let user_id = users[i]['user_id'];
+                // 팔로워 생기면 만약 팔로워가 아니면 추가.
+                if (current_user_id !== users[i]['user_id']){
+                    let profile_img = users[i]['profile_img_src'];
+                    let name = users[i]['name'];
+
+                    let temp_recommend =`
+                    <li>
+                    <div class="recommend-friend-profile">
+                        <img class="img-profile"
+                             src="${profile_img}"
+                             alt="renebaebae님의 프로필 사진">
+                        <div class="profile-text">
+                            <span class="userID point-span">${user_id}</span>
+                            <span class="sub-span">${name}</span>
+                        </div>
+                    </div>
+                    <span class="btn-follow">팔로우</span>
+                </li>
+                    `
+                    $('#recommend-list').append(temp_recommend);
+                }
+
+
+
+            }
+        }
+    })
+}

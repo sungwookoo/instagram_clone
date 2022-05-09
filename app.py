@@ -179,6 +179,16 @@ def get_comment():
         'all_comments': comments
     })
 
+# 추천 list get
+@app.route('/api/recommend', methods=['GET'])
+def get_recommend():
+    users = list(db.users.find({}))
+    users = objectIdToString(users)
+    print(users)
+    return jsonify({
+        'all_users': users
+    })
+
 
 # 댓글 작성(POST) API
 @app.route('/api/comment', methods=['POST'])
@@ -223,6 +233,46 @@ def like():
         db.like.insert_one(doc)
 
     return jsonify({'msg': '좋아요.'})
+
+# 리포스트
+@app.route('/api/repost', methods=['POST'])
+def save_repost():
+    user_id = request.form['user_id']
+    created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    feed_idx = request.form['feed_idx']
+    feeds = list(db.feed.find({}))
+    feeds = objectIdToString(feeds)
+    for i in range(len(feeds)):
+        if feed_idx == feeds[i]['_id']:
+            feed_img_src=feeds[i]['feed_img_src']
+            content=feeds[i]['content']
+            doc = {
+                'user_id': user_id,
+                'feed_img_src': feed_img_src,
+                'content': content,
+                'created_at': created_at
+            }
+
+            db.feed.insert_one(doc)
+    return jsonify({'msg': '리포스트 완료.'})
+
+# 게시물 삭제
+@app.route('/api/removefeed', methods=['POST'])
+def remove_feed():
+    feed_idx = request.form['feed_idx']
+    db.feed.delete_one({'_id': ObjectId(feed_idx)})
+
+    return jsonify({'msg': '게시물이 삭제 되었습니다.'})
+
+# 프로필 이미지 get
+@app.route('/api/profileimg', methods=['GET'])
+def get_profile():
+    users = list(db.users.find({}))
+    users = objectIdToString(users)
+    return jsonify({
+        'all_users': users
+    })
+
 
 
 if __name__ == '__main__':
