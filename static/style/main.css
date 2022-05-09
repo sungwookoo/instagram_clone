@@ -186,6 +186,7 @@ header {
 }
 /* article text data */
 .reaction {
+    margin-top: 15px;
     padding: 0 16px;
 }
 .liked-people {
