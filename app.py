@@ -224,6 +224,28 @@ def like():
 
     return jsonify({'msg': '좋아요.'})
 
+# 리포스트
+@app.route('/api/repost', methods=['POST'])
+def save_repost():
+    user_id = request.form['user_id']
+    created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    feed_idx = request.form['feed_idx']
+    feeds = list(db.feed.find({}))
+    feeds = objectIdToString(feeds)
+    for i in range(len(feeds)):
+        if feed_idx == feeds[i]['_id']:
+            feed_img_src=feeds[i]['feed_img_src']
+            content=feeds[i]['content']
+            doc = {
+                'user_id': user_id,
+                'feed_img_src': feed_img_src,
+                'content': content,
+                'created_at': created_at
+            }
+
+            db.feed.insert_one(doc)
+    return jsonify({'msg': '리포스트 완료.'})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

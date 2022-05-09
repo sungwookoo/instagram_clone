@@ -46,6 +46,20 @@ function commentmore(i, feed_idx) {
     })
 }
 
+// 리포스트
+function repost(feed_idx) {
+    console.log('시작')
+    $.ajax({
+        type: "POST",
+        url: "/api/repost",
+        data: {feed_idx: feed_idx, user_id: current_user_id},
+        success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
+        }
+    })
+}
+
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
     let content = $('#input-comment' + i).val()
@@ -173,16 +187,15 @@ function getFeed() {
                     `<div class="modal fade" id="exampleModal${i + 10000}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel${i + 10000}">Modal title</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            인스타 모달 어캐만들지.
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          </div>
+                                                      <div class="list-group">
+  <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
+    신고하기
+  </button>
+  <button type="button" class="list-group-item list-group-item-action" onclick="repost('${feed_idx}')">리포스트</button>
+  <button type="button" class="list-group-item list-group-item-action">팔로우 취소</button>
+  <button type="button" class="list-group-item list-group-item-action">게시물 삭제</button>
+  <button type="button" class="list-group-item list-group-item-action" data-bs-dismiss="modal">취소</button>
+</div>
                         </div>
                       </div>
                     </div>
@@ -193,7 +206,7 @@ function getFeed() {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel${i}">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel${i}">${user_id} 게시물의 댓글</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
