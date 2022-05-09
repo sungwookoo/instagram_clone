@@ -57,20 +57,20 @@ function viewmore(i, content) {
 
 // 댓글 더보기 modal
 function commentmore(i, feed_idx) {
-    $( 'li' ).remove();
+    $('.comment_plus').remove();
     $.ajax({
         type: "GET", url: "/api/comment", data: {}, success: function (response) {
             let comments = response['all_comments'];
-
             for (let x = 0; x < comments.length; x++) {
                 if (feed_idx === comments[x]['feed_idx']) {
                     let writer = comments[x]['writer_id'];
                     let comment_content = comments[x]['content'];
-                    let temp_comment = `<li>
+                    let temp_comment = `<li class="comment_plus">
                             <span><span class="point-span userID">${writer}</span>${comment_content}</span>
                         </li>`
                     $('#modalcomment' + i).append(temp_comment);
                 }
+
             }
         }
     })
@@ -195,7 +195,7 @@ function getFeed() {
                 <!-- article text data -->
                 <div class="reaction">
                     <div class="liked-people">
-                        <p><span class="point-span">좋아요</span> <span class="point-span">${like_count}개</span></p>
+                        <p><span class="like_size">좋아요</span> <span class="point-span">${like_count}개</span></p>
                     </div>
                     <div class="description">
                         <div><span class="point-span userID">${user_id}</span><span class="mycontent${i}">${content}</span></div>
