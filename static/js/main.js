@@ -26,11 +26,8 @@ function getprofile() {
     $.ajax({
         type: "GET", url: "/api/profileimg", data: {}, success: function (response) {
             let users = response['all_users'];
-            console.log(users)
             for (let i = 0; i < users.length; i++) {
-                console.log("bbb")
                 if (current_user_id === users[i]['user_id']) {
-                    console.log('ccc')
                     let profile_img = users[i]['profile_img_src'];
                     let name = users[i]['name'];
                     let temp_profile = `
@@ -80,7 +77,6 @@ function commentmore(i, feed_idx) {
 
 // 리포스트
 function repost(feed_idx) {
-    console.log('시작')
     $.ajax({
         type: "POST",
         url: "/api/repost",
@@ -94,8 +90,6 @@ function repost(feed_idx) {
 
 // 게시물 삭제
 function removefeed(feed_idx, user_id) {
-    console.log(current_user_id, user_id)
-    console.log(feed_idx)
     if (user_id === current_user_id) {
         $.ajax({
             type: "POST",
