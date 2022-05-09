@@ -123,7 +123,7 @@ main {
     margin-right: 34px;
     display: inline-block;
 }
-article, .section-story, .section-recommend {
+article, .section-recommend {
     background-color: #fff;
     border-radius: 3px;
     border: 1px solid #DBDBDB;
@@ -131,19 +131,14 @@ article, .section-story, .section-recommend {
 article {
     margin-bottom: 60px;
 }
-.section-story, .section-recommend {
+.section-recommend {
+    height: 300px;
     width: 310px;
     padding: 14px 16px;
-    overflow-y: hidden;
-}
-.section-story {
-    height: 212px;
-    margin-bottom: 20px;
     overflow-y: auto;
+    margin-bottom: 20px;
 }
-.section-recommend {
-    height: 180px;
-}
+
 /* article */
 header {
     height: 60px;

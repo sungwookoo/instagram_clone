@@ -179,6 +179,16 @@ def get_comment():
         'all_comments': comments
     })
 
+# 추천 list get
+@app.route('/api/recommend', methods=['GET'])
+def get_recommend():
+    users = list(db.users.find({}))
+    users = objectIdToString(users)
+    print(users)
+    return jsonify({
+        'all_users': users
+    })
+
 
 # 댓글 작성(POST) API
 @app.route('/api/comment', methods=['POST'])

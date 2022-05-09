@@ -1,6 +1,7 @@
 $(document).ready(function () {
     getFeed();
     getprofile();
+    getRecommend();
 })
 
 function logout() {
@@ -271,3 +272,39 @@ function getFeed() {
     })
 }
 
+// 추천 리스트
+function getRecommend() {
+    $.ajax({
+        type: "GET", url: "/api/recommend", data: {}, success: function (response) {
+            let users = response['all_users'];
+            // 팔로워 생기면 추가
+            for (let i = 0; i < users.length; i++) {
+                let user_id = users[i]['user_id'];
+                // 팔로워 생기면 만약 팔로워가 아니면 추가.
+                if (current_user_id !== users[i]['user_id']){
+                    let profile_img = users[i]['profile_img_src'];
+                    let name = users[i]['name'];
+
+                    let temp_recommend =`
+                    <li>
+                    <div class="recommend-friend-profile">
+                        <img class="img-profile"
+                             src="${profile_img}"
+                             alt="renebaebae님의 프로필 사진">
+                        <div class="profile-text">
+                            <span class="userID point-span">${user_id}</span>
+                            <span class="sub-span">${name}</span>
+                        </div>
+                    </div>
+                    <span class="btn-follow">팔로우</span>
+                </li>
+                    `
+                    $('#recommend-list').append(temp_recommend);
+                }
+
+
+
+            }
+        }
+    })
+}
