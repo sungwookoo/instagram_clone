@@ -1,75 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Instagram</title>
-        <link href="../static/style/common.css" rel="stylesheet" type="text/css" />
-        <link href="../static/style/profile.css" rel="stylesheet" type="text/css" />
-        <!-- favicon -->
-        <link rel="icon" href="../static/img/favicon.png">
-        <link rel="instagram-icon" href="../static/img/favicon.png">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Instagram</title>
+    <link href="../static/style/common.css" rel="stylesheet" type="text/css"/>
+    <link href="../static/style/profile.css" rel="stylesheet" type="text/css"/>
+    <!-- favicon -->
+    <link rel="icon" href="../static/img/favicon.png">
+    <link rel="instagram-icon" href="../static/img/favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../static/js/profile.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+        let current_user_id = '{{user_id}}'
+    </script>
+</head>
 
-    <body>
-        <!-- navigation -->
-        <nav>
-            <div class="nav-container">
-                <div class="nav-1">
-                    <img class="logo_instagram_txt" src="../static/img/logo_text.png" alt="logo_text">
+<body>
+<!-- navigation -->
+<nav>
+    <div class="nav-container">
+        <div class="nav-1">
+            <!-- <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/logo.png" alt="logo_img">
+            <div class="vl"></div> -->
+            <img class="logo_instagram_txt" src="../static/img/logo_text.png" alt="logo_text">
+        </div>
+        <input id="searchInput" type="search" class="input-search" placeholder="검색">
+        <div class="nav-2">
+            <a href="/"><img src="../static/img/home.png" alt="홈"></a>
+            <img src="../static/img/dm.png" alt="DM">
+
+            <!-- 모달 버튼 -->
+            <button type="button" class="feedadd" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <img src="../static/img/adding_feed.png" alt="addfeed">
+            </button>
+
+            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
+            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트" onclick="logout()" style="cursor:pointer">
+            <a href="/profile"><img class="pic" style="cursor:pointer"
+                 src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2"
+                 alt="마이페이지"></a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- profile -->
+<section>
+    <div class="profile">
+        <div class="profile_img"><img class="profile_pic"
+                                      src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2"
+                                      alt="마이페이지"></div>
+        <div class="profile_word">
+            <div class="profile_nickname_box">
+                <div class="profile_nickname">WCD_TEAM</div>
+                <div class="profile_setting">
+                    <button class="setting_button">프로필 편집</button>
                 </div>
-                <input id="searchInput" type="search" class="input-search" placeholder="검색">
-                <div class="nav-2">
-                  <img src="../static/img/home.png" alt="홈">
-                  <img src="../static/img/dm.png" alt="DM">
-                  <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
-                  <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
-                  <img class="pic" src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2" alt="마이페이지">
-                </div>
             </div>
-        </nav>
-
-        <!-- profile -->
-        <section>
-            <div class="profile">
-                <div class="profile_img"><img class="profile_pic" src="https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd4518ec7-dc8d-48f9-a9ee-7966e0de1852%2FKakaoTalk_20220411_153346340.jpg?table=block&id=3fcf55f6-f45c-419f-b422-79233a19c0dc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=860&userId=&cache=v2" alt="마이페이지"></div>
-                <div class="profile_word">
-                    <div class="profile_nickname_box">
-                        <div class="profile_nickname">WCD_TEAM</div>
-                        <div class="profile_setting"><button class="setting_button">프로필 편집</button></div>
-                    </div>
-                    <div class="profile_post_box">
-                        <div class="profile_post">게시물 5</div>
-                        <div class="profile_follower">팔로워 11</div>
-                        <div class="profile_follow">팔로우 3</div>
-                    </div>
-                    <div class="profile_name"><strong>차은우</strong></div>
-                </div>
+            <div class="profile_post_box">
+                <div class="profile_post">게시물 5</div>
+                <div class="profile_follower">팔로워 11</div>
+                <div class="profile_follow">팔로우 3</div>
             </div>
-        </section>
+            <div class="profile_name"><strong>차은우</strong></div>
+        </div>
+    </div>
+</section>
 
-        <!-- line -->
-        <div class="line"><!-- 선 --></div>
+<!-- line -->
+<div class="line"><!-- 선 --></div>
 
-        <!-- feed -->
-        <article class="feed_container">
-            <div class="feed_box">
-                <div class="feed"><img src="../static/img/city1.png" width="300" height="300"></div>
-                <div class="feed"><img src="../static/img/city2.png" width="300" height="300"></div>
-                <div class="feed"><img src="../static/img/city3.png" width="300" height="300"></div>
-            </div>
-            <div class="feed_box">
-                <div class="feed"><img src="../static/img/city4.png" width="300" height="300"></div>
-                <div class="feed"><img src="../static/img/city1.png" width="300" height="300"></div>
-                <div class="feed"><img src="../static/img/city2.png" width="300" height="300"></div>
-            </div>
-            <div class="feed_box">
-                <div class="feed"><img src="../static/img/city3.png" width="300" height="300"></div>
-                <div class="feed"><img src="../static/img/city4.png" width="300" height="300"></div>
-                <div class="feed"><img src="../static/img/city1.png" width="300" height="300"></div>
-            </div>
-        </article>
+<!-- feed -->
+<article class="feed_container">
+    <div class="feed_box">
+        <div class="feed"><img src="../static/img/city1.png" width="300" height="300"></div>
+        <div class="feed"><img src="../static/img/city2.png" width="300" height="300"></div>
+        <div class="feed"><img src="../static/img/city3.png" width="300" height="300"></div>
+    </div>
+    <div class="feed_box">
+        <div class="feed"><img src="../static/img/city4.png" width="300" height="300"></div>
+        <div class="feed"><img src="../static/img/city1.png" width="300" height="300"></div>
+        <div class="feed"><img src="../static/img/city2.png" width="300" height="300"></div>
+    </div>
+    <div class="feed_box">
+        <div class="feed"><img src="../static/img/city3.png" width="300" height="300"></div>
+        <div class="feed"><img src="../static/img/city4.png" width="300" height="300"></div>
+        <div class="feed"><img src="../static/img/city1.png" width="300" height="300"></div>
+    </div>
+</article>
 
-    </body>
+</body>
 
-    </html>
+</html>
