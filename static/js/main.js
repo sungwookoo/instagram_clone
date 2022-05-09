@@ -27,6 +27,7 @@ function viewmore(i, content) {
 
 // 댓글 더보기 modal
 function commentmore(i, feed_idx) {
+    $( 'li' ).remove();
     $.ajax({
         type: "GET", url: "/api/comment", data: {}, success: function (response) {
             let comments = response['all_comments'];
