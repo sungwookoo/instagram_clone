@@ -1,4 +1,6 @@
 import os
+
+from bson import ObjectId
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 import jwt
 import hashlib
@@ -19,28 +21,47 @@ db = client.dbinsta
 SECRET_KEY = config.Config.SECRET_KEY
 
 
-@app.route('/')
-def home():
+def check_token(html):
     token_receive = request.cookies.get('token')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user = db.users.find_one({'user_id': payload['id']})
-        return render_template('main.html', user_id=user["user_id"])
+        if user is not None:
+            if html == 'login.html' or html == 'signup.html':
+                return redirect(url_for('main'))
+
+            return render_template(html, user_id=user['user_id'])
     except jwt.ExpiredSignatureError:
-        return redirect(url_for('login'))
+        return render_template('login.html', msg='로그인 만료')
     except jwt.exceptions.DecodeError:
+        if html == 'signup.html':
+            return render_template('signup.html')
         return render_template('login.html')
+
+
+@app.route('/')
+def home():
+    return check_token('main.html')
+
+
+@app.route('/main')
+def main():
+    return check_token('main.html')
 
 
 @app.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return check_token('signup.html')
 
 
 @app.route('/login')
 def login():
-    msg = request.args.get('msg')
-    return render_template('login.html')
+    return check_token('login.html')
+
+
+@app.route('/profile')
+def profile():
+    return check_token('profile.html')
 
 
 @app.route('/api/register', methods=['POST'])
@@ -74,7 +95,7 @@ def login_proc():
 
     if user is not None:
         payload = {'id': user_id,
-                   'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)}
+                   'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=1800)}
 
         return jsonify({
             'result': 'success',
@@ -85,41 +106,46 @@ def login_proc():
         return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호가 일치하지 않습니다.'})
 
 
-@app.route('/profile')
-def profile():
-    return render_template('profile.html')
+# 로그아웃 API
+@app.route("/api/logout", methods=['GET'])
+def logout_proc():
+    token_receive = request.cookies.get('token')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        return jsonify({
+            'result': 'success',
+            'token': jwt.encode(payload, SECRET_KEY, algorithm='HS256'),
+            'msg': '로그아웃 성공'
+        })
+    except jwt.ExpiredSignatureError or jwt.exceptions.DecodeError:
+        return jsonify({
+            'result': 'fail',
+            'msg': '로그아웃 실패'
+        })
 
 
-@app.route('/main')
-def main():
-    return render_template('main.html')
-
-
-# 보니까 이 두개 합쳐야함.. ㄷㄷ..
 # 파일 전송하기(POST)
 @app.route('/api/upload', methods=['get', 'POST'])
 def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        content = request.form['content']
-        filename = secure_filename(file.filename)
-        print(filename)
-        file.save(os.path.join('static', 'uploads', filename))
-        feed_img_src = os.path.join('static', 'uploads', filename)
-        print(feed_img_src)
-        created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    if request.files['file']:
+        if request.method == 'POST':
+            file = request.files['file']
+            content = request.form['content']
+            user_id = request.form['user_id']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('static', 'uploads', filename))
+            feed_img_src = os.path.join('static', 'uploads', filename)
+            created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
-        doc = {
-            'user_id': 'testId0',
-            'feed_img_src': feed_img_src,
-            'content': content,
-            'created_at': created_at
-        }
+            doc = {
+                'user_id': user_id,
+                'feed_img_src': feed_img_src,
+                'content': content,
+                'created_at': created_at
+            }
 
-        db.feed.insert_one(doc)
-        return redirect(url_for('main'))
-
-
+            db.feed.insert_one(doc)
+            return redirect(url_for('login'))
 
 
 # id를 문자열로 바꾸는 함수
@@ -135,26 +161,34 @@ def objectIdToString(find_list):
 def get_feed():
     users = list(db.users.find({}))
     feeds = list(db.feed.find({}))
-    comments = list(db.comment.find({}))
+    likes = list(db.like.find({}))
     feeds = objectIdToString(feeds)
     users = objectIdToString(users)
-    comments = objectIdToString(comments)
+    likes = objectIdToString(likes)
     return jsonify({'all_users': users,
                     'all_feeds': feeds,
-                    'all_comments': comments
+                    'all_likes': likes
                     })
+
+
+@app.route('/api/comment', methods=['GET'])
+def get_comment():
+    comments = list(db.comment.find({}))
+    comments = objectIdToString(comments)
+    return jsonify({
+        'all_comments': comments
+    })
 
 
 # 댓글 작성(POST) API
 @app.route('/api/comment', methods=['POST'])
 def save_comment():
-    # id는 로그인기능받아오면 하고
     content_receive = request.form['content']
     feed_idx = request.form['feed_idx']
     created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-
+    user_id = request.form['user_id']
     doc = {
-        'writer_id': 'testId0',
+        'writer_id': user_id,
         'feed_idx': feed_idx,
         'content': content_receive,
         'created_at': created_at
@@ -163,6 +197,32 @@ def save_comment():
     db.comment.insert_one(doc)
 
     return jsonify({'msg': '댓글이 작성되었습니다.'})
+
+
+# 좋아요(POST) API
+@app.route('/api/like', methods=['POST'])
+def like():
+    user_id = request.form['user_id']
+    created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    likes = list(db.like.find({}))
+    feed_idx = request.form['feed_idx']
+    count = 0
+    for i in range(len(likes)):
+        if likes[i]['feed_idx'] == feed_idx:
+            if likes[i]['user_id'] == user_id:
+                count += 1
+    if count == 1:
+        db.like.delete_one({'user_id': user_id})
+    else:
+        doc = {
+            'user_id': user_id,
+            'feed_idx': feed_idx,
+            'created_at': created_at
+        }
+
+        db.like.insert_one(doc)
+
+    return jsonify({'msg': '좋아요.'})
 
 
 if __name__ == '__main__':
