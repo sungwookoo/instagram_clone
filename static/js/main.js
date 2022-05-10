@@ -35,7 +35,7 @@ function getprofile() {
                     <img class="img-profile pic" src="${profile_img}" alt="프로필">
                     `
                     $('#profileimg').append(temp_profile);
-                    let temp_profile2 =`
+                    let temp_profile2 = `
                     <img class="pic"
                  src="${profile_img}"
                  alt="kusungwoo님의 프로필 사진">
@@ -46,8 +46,9 @@ function getprofile() {
                     `
                     $('#myProfile').append(temp_profile2);
                 }
+            }
         }
-    }})
+    })
 }
 
 // 더보기
@@ -122,10 +123,11 @@ function removefeed(feed_idx, user_id) {
                 window.location.reload();
             }
         })
-    }
-    else {
+    } else {
         alert("자신의 게시물만 삭제할 수 있습니다.");
-}}
+    }
+}
+
 // 댓글 작성(POST) API
 function saveComment(i, feed_idx) {
     let content = $('#input-comment' + i).val()
@@ -203,11 +205,11 @@ function getFeed() {
                 <div class="icons-react">
                     <div class="icons-left">
                         <button class="like_button" onclick="saveLike('${feed_idx}')">
-                        <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png">
-</button>
+                            <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="좋아요">
+                        </button>
                         <img class="icon-react"
                              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png" alt="말풍선">
-                        <img class="icon-react" src="../static/img/dm.png" alt="DM">
+<!--                        <img class="icon-react" src="../static/img/dm.png" alt="DM">-->
                     </div>
                     <img class="icon-react"
                          src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/bookmark.png" alt="북마크">
@@ -301,11 +303,11 @@ function getRecommend() {
             for (let i = 0; i < users.length; i++) {
                 let user_id = users[i]['user_id'];
                 // 팔로워 생기면 만약 팔로워가 아니면 추가.
-                if (current_user_id !== users[i]['user_id']){
+                if (current_user_id !== users[i]['user_id']) {
                     let profile_img = users[i]['profile_img_src'];
                     let name = users[i]['name'];
 
-                    let temp_recommend =`
+                    let temp_recommend = `
                     <li>
                     <div class="recommend-friend-profile">
                         <img class="img-profile"
@@ -321,7 +323,6 @@ function getRecommend() {
                     `
                     $('#recommend-list').append(temp_recommend);
                 }
-
 
 
             }
