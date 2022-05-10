@@ -219,7 +219,6 @@ def get_commentcount():
 def get_recommend():
     users = list(db.users.find({}))
     users = objectIdToString(users)
-    print(users)
     return jsonify({
         'all_users': users
     })
