@@ -1,3 +1,5 @@
+from itertools import count
+import json
 import os
 
 from bson import ObjectId
@@ -114,7 +116,7 @@ def sign_up():
                'name': request.form['name_give'],
                'phone': request.form['phone_give'],
                'email': request.form['email_give'],
-               'profile_img_src': ''
+               'profile_img_src': '',
                }
         db.users.insert_one(doc)
         return jsonify({'msg': '회원가입이 완료되었습니다.'})
@@ -233,8 +235,13 @@ def get_commentcount():
 def get_recommend():
     users = list(db.users.find({}))
     users = objectIdToString(users)
+
+    all_follower = list(db.follower.find()) #전체 팔로워
+    all_follower = objectIdToString(all_follower)
+
     return jsonify({
-        'all_users': users
+        'all_users': users,
+        'all_follower':all_follower
     })
 
 
@@ -323,6 +330,29 @@ def get_profile():
         'all_users': users
     })
 
+#팔로우 언팔로우
+@app.route('/api/follow', methods=['POST'])
+def is_following():
+    following = request.form['following']
+    follower = request.form['follower']
+    check_follow = db.follower.find_one({'following':following,'follower':follower})
+    if check_follow is None:
+        doc = {
+        'following': following,
+        'follower': follower,
+        }
+        db.follower.insert_one(doc)
+        return jsonify({
+            'success': 'follow'
+        })
+    else:
+        doc = {
+        'following': following,
+        'follower': follower,
+        }
+        db.follower.delete_one(doc)
+        return jsonify({'success':'unfollow'})
+    
 
 # 피드 알림 API
 @app.route('/api/feed_alert', methods=['GET'])
@@ -362,7 +392,6 @@ def feed_alert():
         'feed': feeds,
         'data': json_object
     })
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
