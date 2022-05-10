@@ -58,11 +58,32 @@ def signup():
 def login():
     return check_token('login.html')
 
-
-@app.route('/profile')
-def profile():
-    return check_token('profile.html')
-
+@app.route('/profile', methods=['GET'])
+def getProfile():
+    users = list(db.users.find({}))
+    users = objectIdToString(users)
+    feeds = list(db.feed.find({}))
+    feeds = objectIdToString(feeds)
+    return jsonify({
+        'user_id' : users,
+        'all_feeds': feeds
+    })
+# @app.route('/profile', methods=['GET'])
+# def profile():
+#     users = list(db.users.find({}))
+#     users = objectIdToString(users)
+#     feeds = list(db.feed.find({}))
+#     feeds = objectIdToString(feeds)
+#     return jsonify({
+#         'all_users': users,
+#         'all_feeds': feeds
+#     })
+    # return check_token('profile.html')
+    # 아이디를 주소로 하고 프린트해서 아이디가 나오게 한다
+    # 아이디로 몽고디비에서 유저정보를 갖고오고 그 유저정보들을 전부 프린트한다
+    # 아이디로 몽고디비에서 이 아이디의 유저가 작성한 게시글들을 전부 갖고오고 전부 프린트한다
+    # 아이디로 몽고디비에서 이 아이디의 유저가 팔로우한 사람들을 전부 갖고오고, 프린트한다
+    # 아이디로 몽고디비에서 이 아이디의 유저를 팔로잉한 사람들을 전부 갖고오고, 프린트한다
 
 @app.route('/api/register', methods=['POST'])
 def sign_up():
@@ -240,7 +261,6 @@ def like():
             'feed_idx': feed_idx,
             'created_at': created_at
         }
-
         db.like.insert_one(doc)
 
     return jsonify({'msg': 'good!'})
@@ -283,6 +303,7 @@ def get_profile():
     return jsonify({
         'all_users': users
     })
+
 
 
 

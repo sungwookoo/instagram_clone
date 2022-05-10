@@ -197,7 +197,7 @@ function getFeed() {
                             <img class="icon-react icon-more"
                              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">               
                         </button>
-                    </header>
+                </header>
                 <div class="main-image">
                     <img src="${feed_img_src}"
                          alt="" class="mainPic">
