@@ -64,7 +64,6 @@ function getProfile() {
                     let feed_img_src = feeds[k]['feed_img_src'];
                     let temp_myfeed = `
                         <div class="feed"><img src="${feed_img_src}" width="300" height="300"></div>
-                        </div>
                         `
                     $('#myfeedimg').append(temp_myfeed);
                 }

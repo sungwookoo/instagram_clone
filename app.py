@@ -86,12 +86,6 @@ def getProfile():
         # 'all_followings': followings
     })
 
-    # 아이디를 주소로 하고 프린트해서 아이디가 나오게 한다
-    # 아이디로 몽고디비에서 유저정보를 갖고오고 그 유저정보들을 전부 프린트한다
-    # 아이디로 몽고디비에서 이 아이디의 유저가 작성한 게시글들을 전부 갖고오고 전부 프린트한다
-    # 아이디로 몽고디비에서 이 아이디의 유저가 팔로우한 사람들을 전부 갖고오고, 프린트한다
-    # 아이디로 몽고디비에서 이 아이디의 유저를 팔로잉한 사람들을 전부 갖고오고, 프린트한다
-
 @app.route('/api/register', methods=['POST'])
 def sign_up():
     user = db.users.find_one({'user_id': request.form['id_give']})
