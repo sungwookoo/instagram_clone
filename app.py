@@ -58,9 +58,11 @@ def signup():
 def login():
     return check_token('login.html')
 
+
 @app.route('/profile')
 def profile():
     return check_token('profile.html')
+
 
 @app.route('/api/get_profile', methods=['GET'])
 def getProfile():
@@ -70,9 +72,9 @@ def getProfile():
     print(user_id)
     # print(follower)
     # print(following)
-    users = list(db.users.find({'user_id':user_id}))
+    users = list(db.users.find({'user_id': user_id}))
     users = objectIdToString(users)
-    feeds = list(db.feed.find({'user_id':user_id}))
+    feeds = list(db.feed.find({'user_id': user_id}))
     feeds = objectIdToString(feeds)
     # followers = list(db.follower.find({'follower': follower}))
     # followers = objectIdToString(followers)
@@ -80,11 +82,12 @@ def getProfile():
     # followings = objectIdToString(followings)
 
     return jsonify({
-        'all_users' : users,
+        'all_users': users,
         'all_feeds': feeds
         # 'all_followers': followers,
         # 'all_followings': followings
     })
+
 
 @app.route('/api/register', methods=['POST'])
 def sign_up():
@@ -290,6 +293,7 @@ def save_repost():
             db.feed.insert_one(doc)
     return jsonify({'msg': '리포스트 완료.'})
 
+
 # 게시물 삭제
 @app.route('/api/removefeed', methods=['POST'])
 def remove_feed():
@@ -297,6 +301,7 @@ def remove_feed():
     db.feed.delete_one({'_id': ObjectId(feed_idx)})
 
     return jsonify({'msg': '게시물이 삭제 되었습니다.'})
+
 
 # 프로필 이미지 get
 @app.route('/api/profileimg', methods=['GET'])
@@ -308,6 +313,44 @@ def get_profile():
     })
 
 
+# 피드 알림 API
+@app.route('/api/feed_alert', methods=['GET'])
+def feed_alert():
+    user_id = request.args.get('user_id')
+    print(user_id)
+    feeds = list(db.feed.find({'user_id': user_id}))
+    feeds = objectIdToString(feeds)
+    result = []
+    json_object = {
+
+
+    }
+    for feed in feeds:
+        feed_list = [feed]
+        comments = list(db.comment.find({'feed_idx': feed['_id']}))
+        likes = list(db.like.find({'feed_idx': feed['_id']}))
+        comments = objectIdToString(comments)
+        likes = objectIdToString(likes)
+        result.append(feed_list)
+
+        if comments is None and likes is not None:
+            json_object[feed['_id']] = {
+                'like': likes
+            }
+        elif comments is not None and likes is None:
+            json_object[feed['_id']] = {
+                'comment': comments
+            }
+        else:
+            json_object[feed['_id']] = {
+                'comment': comments,
+                'like': likes
+            }
+
+    return jsonify({
+        'feed': feeds,
+        'data': json_object
+    })
 
 
 if __name__ == '__main__':
