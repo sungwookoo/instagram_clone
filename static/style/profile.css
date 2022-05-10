@@ -15,6 +15,7 @@ nav {
     justify-content: center;
     background-color: white;
     border-bottom: 1px solid #DBDBDB;
+    z-index: 1;
 }
 .nav-container {
     max-width: 1000px;
@@ -169,7 +170,7 @@ nav img {
 
 /*모달*/
 .addfeed_ul{
-    margin-right: 44px;
+    margin-right: 44z   px;
     display: flex;
     justify-content: center;
     align-items: center;
