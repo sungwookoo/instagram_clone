@@ -2,6 +2,7 @@ $(document).ready(function () {
     getProfile();
 })
 
+// 로그아웃
 function logout() {
     $.ajax({
         type: "GET",
@@ -20,6 +21,7 @@ function logout() {
     })
 }
 
+
 function getProfile() {
     $.ajax({
         type: "GET",
@@ -33,6 +35,10 @@ function getProfile() {
             // let followers = response['all_followers'];
             // let followings = response['all_followings'];
 
+            let feed_count = feeds.length
+            // let follower_count = 0
+            // let following_count = 0
+// 마이 프로필
             for (let i = 0; i < users.length; i++) {
                 if (current_user_id === users[i]['user_id']) {
                     let profile_img = users[i]['profile_img_src'];
@@ -45,13 +51,13 @@ function getProfile() {
                             <div class="profile_nickname_box">
                                 <div class="profile_nickname">${user_id}</div>
                                 <div class="profile_setting">
-                                    <button class="setting_button">프로필 편집</button>
+<!--                                    <button class="setting_button" data-bs-toggle="modal" data-bs-target="#editprofileimg">프로필 편집</button>-->
                                 </div>
                             </div>
                             <div class="profile_post_box">
-                                <div class="profile_post">게시물{feed_count}</div>
-                                <div class="profile_follower">팔로워{temp}</div>
-                                <div class="profile_follow">팔로우{temp}</div>
+                                <div class="profile_post">게시물 ${feed_count}</div>
+                                <div class="profile_follower">{follower_count}</div>
+                                <div class="profile_follow">{following_count}</div>
                             </div>
                             <div class="profile_name"><strong>${name}</strong></div>
                         </div>
@@ -59,6 +65,7 @@ function getProfile() {
                     $('#myprofileimg').append(temp_myprofile);
                 }
             }
+// 마이 피드
             for (let k = 0; k < feeds.length; k++) {
                 if (current_user_id === feeds[k]['user_id']) {
                     let feed_img_src = feeds[k]['feed_img_src'];
