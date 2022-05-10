@@ -151,17 +151,19 @@ nav img {
      position: absolute;
         top: 400px;
         left: 300px;
-    width: 1010px;
-    height: 1000px;
-}
-.feed_box{
+    /*width: 1010px;*/
+    /*height: 1000px;*/
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 3.5rem;
+
+}
+.feed_box{
+
     /*justify-content: space-between;*/
     /*margin-bottom: 50px;*/
 }
 .feed{
-    width: 300px;
-    height: 300px;
+    /*width: 300px;*/
+    /*height: 300px;*/
 }
