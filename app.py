@@ -243,7 +243,7 @@ def like():
 
         db.like.insert_one(doc)
 
-    return jsonify({'msg': '좋아요.'})
+    return jsonify({'msg': 'good!'})
 
 # 리포스트
 @app.route('/api/repost', methods=['POST'])
