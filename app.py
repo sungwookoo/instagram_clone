@@ -1,3 +1,5 @@
+from itertools import count
+import json
 import os
 
 from bson import ObjectId
@@ -100,7 +102,7 @@ def sign_up():
                'name': request.form['name_give'],
                'phone': request.form['phone_give'],
                'email': request.form['email_give'],
-               'profile_img_src': ''
+               'profile_img_src': '',
                }
         db.users.insert_one(doc)
         return jsonify({'msg': '회원가입이 완료되었습니다.'})
@@ -219,9 +221,11 @@ def get_commentcount():
 def get_recommend():
     users = list(db.users.find({}))
     users = objectIdToString(users)
-    print(users)
+    all_follower = list(db.follower.find()) #전체 팔로워
+    all_follower = objectIdToString(all_follower)
     return jsonify({
-        'all_users': users
+        'all_users': users,
+        'all_follower':all_follower
     })
 
 
@@ -311,26 +315,25 @@ def get_profile():
 #팔로우 언팔로우
 @app.route('/api/follow', methods=['POST'])
 def is_following():
-    token_receive = request.cookies.get('token')
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    print(payload['id'])
-    follow_id = request.form['f_give']
-    print(follow_id)
-
-    my_follow = db.users.find_one({'id':payload['id']})
-    print(my_follow['following'])
-
-    if follow_id in my_follow['following']:
-        db.users.update_one({'id': payload['id']}, {'$pull': {'following': follow_id}})
-        print('DB 에 팔로우 제거')
-        return jsonify(({'result': 'success', 'is_following': 0}))
-
+    following = request.form['following']
+    follower = request.form['follower']
+    check_follow = db.follower.find_one({'following':following,'follower':follower})
+    if check_follow is None:
+        doc = {
+        'following': following,
+        'follower': follower,
+        }
+        db.follower.insert_one(doc)
+        return jsonify({
+            'success': 'unfollow'
+        })
     else:
-        db.users.update_one({'id': payload['id']}, {'$push': {'following': follow_id}})
-        print('DB 에 팔로우 추가')
-        return jsonify({'result': 'success', 'is_following': 1})
-
-
-
+        doc = {
+        'following': following,
+        'follower': follower,
+        }
+        db.follower.delete_one(doc)
+        return jsonify({'success':'follow'})
+    
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
