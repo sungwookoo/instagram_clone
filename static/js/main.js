@@ -393,7 +393,7 @@ function getRecommend() {
                                     </div>
                                 </div>
                                 <div id="follow">
-                                    <a id="fo-m" onclick="follow('${user_id}')">팔로우</a>
+                                    <a id="fo-m${i}" onclick="follow('${user_id}','${i}')">팔로우</a>
                                 </div>
                             </li>
                                 `;
@@ -406,7 +406,7 @@ function getRecommend() {
         }
     })
 }
-function follow(Follow_ID){
+function follow(Follow_ID,i){
     f_id = Follow_ID
     $.ajax({
         type: "POST",
@@ -414,9 +414,11 @@ function follow(Follow_ID){
         data: {follower : f_id, following : current_user_id},
         success: function (response) {
             console.log(response);
-            if(response['success' =='follow']){
+            if(response['success'] == 'follow'){
+                $('#fo-m'+i).html('언팔로우');
                 alert('팔로우 했습니다!')
             }else{
+                $('#fo-m'+i).html('팔로우');
                 alert('언팔로우 했습니다!')
             }
         }
