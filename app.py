@@ -58,79 +58,33 @@ def signup():
 def login():
     return check_token('login.html')
 
+@app.route('/profile')
+def profile():
+    return check_token('profile.html')
 
-@app.route('/profile', methods=['GET'])
+@app.route('/api/get_profile', methods=['GET'])
 def getProfile():
-    users = list(db.users.find({}))
-    users = objectIdToString(users)
-    feeds = list(db.feed.find({}))
-    feeds = objectIdToString(feeds)
-    return jsonify({
-        'user_id': users,
-        'all_feeds': feeds
-    })
-
-
-# @app.route('/profile', methods=['GET'])
-# def profile():
-#     users = list(db.users.find({}))
-#     users = objectIdToString(users)
-#     feeds = list(db.feed.find({}))
-#     feeds = objectIdToString(feeds)
-#     return jsonify({
-#         'all_users': users,
-#         'all_feeds': feeds
-#     })
-# return check_token('profile.html')
-# 아이디를 주소로 하고 프린트해서 아이디가 나오게 한다
-# 아이디로 몽고디비에서 유저정보를 갖고오고 그 유저정보들을 전부 프린트한다
-# 아이디로 몽고디비에서 이 아이디의 유저가 작성한 게시글들을 전부 갖고오고 전부 프린트한다
-# 아이디로 몽고디비에서 이 아이디의 유저가 팔로우한 사람들을 전부 갖고오고, 프린트한다
-# 아이디로 몽고디비에서 이 아이디의 유저를 팔로잉한 사람들을 전부 갖고오고, 프린트한다
-
-
-# 피드 알림 API
-@app.route('/api/feed_alert', methods=['GET'])
-def feed_alert():
     user_id = request.args.get('user_id')
+    # follower = request.args.get('follower')
+    # following = request.args.get('following')
     print(user_id)
-    feeds = list(db.feed.find({'user_id': user_id}))
+    # print(follower)
+    # print(following)
+    users = list(db.users.find({'user_id':user_id}))
+    users = objectIdToString(users)
+    feeds = list(db.feed.find({'user_id':user_id}))
     feeds = objectIdToString(feeds)
-    result = []
+    # followers = list(db.follower.find({'follower': follower}))
+    # followers = objectIdToString(followers)
+    # followings = list(db.follower.find({'follower': following}))
+    # followings = objectIdToString(followings)
 
-    json_object = {
-
-    }
-
-    for feed in feeds:
-        feed_list = [feed]
-        comments = list(db.comment.find({'feed_idx': feed['_id']}))
-        likes = list(db.like.find({'feed_idx': feed['_id']}))
-        comments = objectIdToString(comments)
-        likes = objectIdToString(likes)
-        result.append(feed_list)
-
-        if comments is None and likes is not None:
-            json_object[feed['_id']] = {
-                'like': likes
-            }
-        elif comments is not None and likes is None:
-            json_object[feed['_id']] = {
-                'comment': comments
-            }
-        else:
-            json_object[feed['_id']] = {
-                'comment': comments,
-                'like': likes
-            }
-
-    # json_result = json.dumps(json_object)
-    # json_object = json.loads(json_result)
     return jsonify({
-        'feed': feeds,
-        'data': json_object
+        'all_users' : users,
+        'all_feeds': feeds
+        # 'all_followers': followers,
+        # 'all_followings': followings
     })
-
 
 @app.route('/api/register', methods=['POST'])
 def sign_up():
@@ -337,7 +291,6 @@ def save_repost():
             db.feed.insert_one(doc)
     return jsonify({'msg': '리포스트 완료.'})
 
-
 # 게시물 삭제
 @app.route('/api/removefeed', methods=['POST'])
 def remove_feed():
@@ -345,7 +298,6 @@ def remove_feed():
     db.feed.delete_one({'_id': ObjectId(feed_idx)})
 
     return jsonify({'msg': '게시물이 삭제 되었습니다.'})
-
 
 # 프로필 이미지 get
 @app.route('/api/profileimg', methods=['GET'])
@@ -355,6 +307,8 @@ def get_profile():
     return jsonify({
         'all_users': users
     })
+
+
 
 
 if __name__ == '__main__':

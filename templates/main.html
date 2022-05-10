@@ -94,22 +94,31 @@
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">새 게시물 만들기</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action = "/api/upload" method = "POST"
+                        <ul class="addfeed_ul">
+                            <form action = "/api/upload" method = "POST"
                                   enctype = "multipart/form-data">
-                            <div class="modal-body">
+                            <li class="addfeed_li">
+                                <div class="feedaddtitle"><br>새 게시물 만들기</div>
+                            </li>
+                            <li class="addfeed_li2">
                                 <input type="file" name="file" class="real-upload" accept="image/*" required multiple>
-                                <input type="text" name="content">
+                            </li>
+                            <li class="addfeed_li">
+                                <input class="textfeed" type="text" name="content" placeholder="                                   내용">
                                 <input type="hidden" name="user_id" value="{{user_id}}">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="downloadimg" >게시</button>
-                            </div>
-                        </form>
+                            </li>
+                            <li class="addfeed_li">
+                                <button type="submit" class="btnfeedadd" data-bs-dismiss="modal" id="downloadimg">게시</button>
+                            </li>
+
+                            <li class="addfeed_li">
+                                <button type="button" class="btnfeedadd" data-bs-dismiss="modal">닫기</button>
+                            </li>
+                                <li class="addfeed_li">
+                                </li>
+                            </form>
+                        </ul>
+
                     </div>
                 </div>
 </div>
