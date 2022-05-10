@@ -454,7 +454,8 @@ ul.story-list .profile-text {
     color: black;
     border-radius: 3px;
     bookmark-label: none;
-
+    background-image: url('../img/feedadddd.png');
+    background-size: cover;
 }
 input[type=file]::file-selector-button {
     display: none;
