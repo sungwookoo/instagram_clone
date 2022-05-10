@@ -58,32 +58,33 @@ def signup():
 def login():
     return check_token('login.html')
 
-@app.route('/profile', methods=['GET'])
+@app.route('/profile')
+def profile():
+    return check_token('profile.html')
+
+@app.route('/api/get_profile', methods=['GET'])
 def getProfile():
-    users = list(db.users.find({}))
+    user_id = request.args.get('user_id')
+    # follower = request.args.get('follower')
+    # following = request.args.get('following')
+    print(user_id)
+    # print(follower)
+    # print(following)
+    users = list(db.users.find({'user_id':user_id}))
     users = objectIdToString(users)
-    feeds = list(db.feed.find({}))
+    feeds = list(db.feed.find({'user_id':user_id}))
     feeds = objectIdToString(feeds)
+    # followers = list(db.follower.find({'follower': follower}))
+    # followers = objectIdToString(followers)
+    # followings = list(db.follower.find({'follower': following}))
+    # followings = objectIdToString(followings)
+
     return jsonify({
-        'user_id' : users,
+        'all_users' : users,
         'all_feeds': feeds
+        # 'all_followers': followers,
+        # 'all_followings': followings
     })
-# @app.route('/profile', methods=['GET'])
-# def profile():
-#     users = list(db.users.find({}))
-#     users = objectIdToString(users)
-#     feeds = list(db.feed.find({}))
-#     feeds = objectIdToString(feeds)
-#     return jsonify({
-#         'all_users': users,
-#         'all_feeds': feeds
-#     })
-    # return check_token('profile.html')
-    # 아이디를 주소로 하고 프린트해서 아이디가 나오게 한다
-    # 아이디로 몽고디비에서 유저정보를 갖고오고 그 유저정보들을 전부 프린트한다
-    # 아이디로 몽고디비에서 이 아이디의 유저가 작성한 게시글들을 전부 갖고오고 전부 프린트한다
-    # 아이디로 몽고디비에서 이 아이디의 유저가 팔로우한 사람들을 전부 갖고오고, 프린트한다
-    # 아이디로 몽고디비에서 이 아이디의 유저를 팔로잉한 사람들을 전부 갖고오고, 프린트한다
 
 @app.route('/api/register', methods=['POST'])
 def sign_up():
