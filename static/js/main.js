@@ -4,6 +4,29 @@ $(document).ready(function () {
     getRecommend();
 })
 
+function timeForToday(value) {
+    const today = new Date();
+    const timeValue = new Date(value);
+
+    const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+    if (betweenTime < 1) return '방금전';
+    if (betweenTime < 60) {
+        return `${betweenTime}분전`;
+    }
+
+    const betweenTimeHour = Math.floor(betweenTime / 60);
+    if (betweenTimeHour < 24) {
+        return `${betweenTimeHour}시간전`;
+    }
+
+    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+    if (betweenTimeDay < 365) {
+        return `${betweenTimeDay}일전`;
+    }
+
+    return `${Math.floor(betweenTimeDay / 365)}년전`;
+}
+
 function logout() {
     $.ajax({
         type: "GET",
@@ -21,6 +44,54 @@ function logout() {
         }
     })
 }
+
+// 피드 알림
+        function feed_alert() {
+            $('.alert_li').remove();
+            $.ajax({
+                type: "GET",
+                url: "/api/feed_alert",
+                data: {user_id: current_user_id},
+                success: function (response) {
+                    let feeds = response['feed']
+                    let data = response['data']
+                    let temp_html = '';
+                    for (let i = 0; i < feeds.length; i++) {
+                        let comments = data[feeds[i]['_id']]['comment']
+                        // console.log(comments)
+                        let likes = data[feeds[i]['_id']]['like']
+                        for (let j = comments.length-1; j >= 0; j--) {
+                            console.log(comments[j])
+                            if (comments[j] !== 'undefined' && comments[j] != null) {
+                                console.log('통과')
+                                if (comments[j]['writer_id'] !== current_user_id) {
+                                    temp_html += `<li class="alert_li"><a class="dropdown-item" href="">${comments[j]['writer_id']}님이 내 피드에 댓글을 작성했습니다. ${timeForToday(comments[j]['created_at'])}</a></li>`
+                                    // console.log(comments[j]['writer_id'] + "님이 내 " + feeds[i]['_id'] + " 피드에 댓글을 작성했습니다.")
+                                    // console.log(timeForToday(comments[j]['created_at']))
+                                }
+                            }
+                        }
+
+                        for (let j = likes.length-1; j >= 0; j--) {
+                            if (likes[j] !== 'undefined' && likes[j] != null) {
+                                if (likes[j]['user_id'] !== current_user_id) {
+                                    console.log('b')
+                                    temp_html += `<li class="alert_li"><a class="dropdown-item" href="">${likes[j]['user_id']}님이 내 피드를 좋아합니다. ${timeForToday(likes[j]['created_at'])}</a></li>`
+                                    // console.log(likes[j]['user_id'] + "님이 내 " + feeds[i]['_id'] + " 피드를 좋아합니다.")
+                                    // console.log(timeForToday(comments[j]['created_at']))
+                                }
+                            }
+                        }
+                    }
+                     if (temp_html.length < 1) {
+                         temp_html += `<li class="alert_li"><a class="dropdown-item" href="">새로운 알림이 없습니다</a></li>`
+                     }
+
+                    $('#alert_list').append(temp_html);
+                }
+            })
+        }
+
 
 // 프로필 이미지 넣기
 function getprofile() {
@@ -51,32 +122,35 @@ function getprofile() {
     })
 }
 
+
 // 더보기
 function viewmore(i, content) {
     $('.mycontent' + i).html(content)
 }
 
 // 댓글 수 세기
-function comment_count(i, feed_idx){
-    console.log(i, feed_idx)
+function comment_count(i, feed_idx) {
     $.ajax({
         type: "GET", url: "/api/commentcount", data: {}, success: function (response) {
-        let comments = response['all_comments'];
-        let comment_count= 0;
-        for (let k = 0; k < comments.length; k++) {
-                        if (feed_idx === comments[k]['feed_idx']) {
-                            comment_count++
-                        }
-                    }
+            let comments = response['all_comments'];
+            let comment_count = 0;
+            for (let k = 0; k < comments.length; k++) {
+                if (feed_idx === comments[k]['feed_idx']) {
+                    comment_count++
+                }
+            }
 
-        if (comment_count != 0) {
-            let comment_basic =
-                `<button type="button" class="morebutton" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" onclick="commentmore('${i}','${feed_idx}')">
+            if (comment_count != 0) {
+                let comment_basic =
+                    `<button type="button" class="morebutton" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" onclick="commentmore('${i}','${feed_idx}')">
                 <p class="toseemore"> 댓글 ${comment_count}개 모두 보기 </p>
             </button>`
-            $('#commentappend'+i).append(comment_basic);
+                $('#commentappend' + i).append(comment_basic);
+            }
         }
-}})}
+    })
+}
+
 // 댓글 더보기 modal
 function commentmore(i, feed_idx) {
     $('.comment_plus').remove();
@@ -87,8 +161,9 @@ function commentmore(i, feed_idx) {
                 if (feed_idx === comments[x]['feed_idx']) {
                     let writer = comments[x]['writer_id'];
                     let comment_content = comments[x]['content'];
+                    let created_at = comments[x]['created_at'];
                     let temp_comment = `<li class="comment_plus">
-                            <span><span class="point-span userID">${writer}</span>${comment_content}</span>
+                            <span><span class="point-span userID">${writer}</span>${comment_content}<span style="float: right">${timeForToday(created_at)}</span></span>
                         </li>`
                     $('#modalcomment' + i).append(temp_comment);
                 }
@@ -227,7 +302,7 @@ function getFeed() {
                             
                         </div>
                         <div class="time-log">
-                            <span>${created_at}</span>
+                            <span>${timeForToday(created_at)}</span>
                         </div>
                     </div>
                 </div>
@@ -242,8 +317,7 @@ function getFeed() {
                     }
 
                 }
-                console.log(i)
-                comment_count(i,feed_idx)
+                comment_count(i, feed_idx)
                 let content_txt = $('.mycontent').text();
                 let content_txt_short = content_txt.substring(0, 30) + "..." + `<a href="javascript:void(0)" class="more" onclick="viewmore('${i}', '${content}')">더보기</a>`;
 

@@ -58,9 +58,11 @@ def signup():
 def login():
     return check_token('login.html')
 
+
 @app.route('/profile')
 def profile():
     return check_token('profile.html')
+
 
 @app.route('/api/get_profile', methods=['GET'])
 def getProfile():
@@ -70,9 +72,9 @@ def getProfile():
     print(user_id)
     # print(follower)
     # print(following)
-    users = list(db.users.find({'user_id':user_id}))
+    users = list(db.users.find({'user_id': user_id}))
     users = objectIdToString(users)
-    feeds = list(db.feed.find({'user_id':user_id}))
+    feeds = list(db.feed.find({'user_id': user_id}))
     feeds = objectIdToString(feeds)
     # followers = list(db.follower.find({'follower': follower}))
     # followers = objectIdToString(followers)
@@ -80,11 +82,26 @@ def getProfile():
     # followings = objectIdToString(followings)
 
     return jsonify({
-        'all_users' : users,
+        'all_users': users,
         'all_feeds': feeds
         # 'all_followers': followers,
         # 'all_followings': followings
     })
+
+# 프로필 사진 편집
+@app.route('/api/edit_profile', methods=['get', 'POST'])
+def edit_profile():
+    if request.files['file']:
+        if request.method == 'POST':
+            file = request.files['file']
+            user_id = request.form['user_id']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('static', 'uploads', filename))
+            profile_img_src = os.path.join('static', 'uploads', filename)
+
+            db.users.update_one({'user_id':user_id},{'$set':{'profile_img_src':profile_img_src}})
+            return redirect(url_for('profile'))
+
 
 @app.route('/api/register', methods=['POST'])
 def sign_up():
@@ -204,6 +221,7 @@ def get_comment():
         'all_comments': comments
     })
 
+
 @app.route('/api/commentcount', methods=['GET'])
 def get_commentcount():
     comments = list(db.comment.find({}))
@@ -212,12 +230,12 @@ def get_commentcount():
         'all_comments': comments
     })
 
+
 # 추천 list get
 @app.route('/api/recommend', methods=['GET'])
 def get_recommend():
     users = list(db.users.find({}))
     users = objectIdToString(users)
-    print(users)
     return jsonify({
         'all_users': users
     })
@@ -266,6 +284,7 @@ def like():
 
     return jsonify({'msg': 'good!'})
 
+
 # 리포스트
 @app.route('/api/repost', methods=['POST'])
 def save_repost():
@@ -276,8 +295,8 @@ def save_repost():
     feeds = objectIdToString(feeds)
     for i in range(len(feeds)):
         if feed_idx == feeds[i]['_id']:
-            feed_img_src=feeds[i]['feed_img_src']
-            content=feeds[i]['content']
+            feed_img_src = feeds[i]['feed_img_src']
+            content = feeds[i]['content']
             doc = {
                 'user_id': user_id,
                 'feed_img_src': feed_img_src,
@@ -288,6 +307,7 @@ def save_repost():
             db.feed.insert_one(doc)
     return jsonify({'msg': '리포스트 완료.'})
 
+
 # 게시물 삭제
 @app.route('/api/removefeed', methods=['POST'])
 def remove_feed():
@@ -295,6 +315,7 @@ def remove_feed():
     db.feed.delete_one({'_id': ObjectId(feed_idx)})
 
     return jsonify({'msg': '게시물이 삭제 되었습니다.'})
+
 
 # 프로필 이미지 get
 @app.route('/api/profileimg', methods=['GET'])
@@ -306,6 +327,44 @@ def get_profile():
     })
 
 
+# 피드 알림 API
+@app.route('/api/feed_alert', methods=['GET'])
+def feed_alert():
+    user_id = request.args.get('user_id')
+    print(user_id)
+    feeds = list(db.feed.find({'user_id': user_id}))
+    feeds = objectIdToString(feeds)
+    result = []
+    json_object = {
+
+
+    }
+    for feed in feeds:
+        feed_list = [feed]
+        comments = list(db.comment.find({'feed_idx': feed['_id']}))
+        likes = list(db.like.find({'feed_idx': feed['_id']}))
+        comments = objectIdToString(comments)
+        likes = objectIdToString(likes)
+        result.append(feed_list)
+
+        if comments is None and likes is not None:
+            json_object[feed['_id']] = {
+                'like': likes
+            }
+        elif comments is not None and likes is None:
+            json_object[feed['_id']] = {
+                'comment': comments
+            }
+        else:
+            json_object[feed['_id']] = {
+                'comment': comments,
+                'like': likes
+            }
+
+    return jsonify({
+        'feed': feeds,
+        'data': json_object
+    })
 
 
 if __name__ == '__main__':
