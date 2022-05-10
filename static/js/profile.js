@@ -28,7 +28,6 @@ function getProfile() {
         url: "/api/get_profile",
         data: {user_id: current_user_id},
         success: function (response) {
-            console.log(response)
 
             let users = response['all_users'];
             let feeds = response['all_feeds'];
