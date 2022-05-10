@@ -33,24 +33,30 @@
         <input id="searchInput" type="search" class="input-search" placeholder="검색">
         <div class="nav-2">
             <a href="/"><img src="../static/img/home.png" alt="홈"></a>
-            <img src="../static/img/dm.png" alt="DM">
+            <img src="../static/img/dm.png" style="margin-top: 5px;" alt="DM">
 
             <!-- 모달 버튼 -->
             <button type="button" class="feedadd" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <img src="../static/img/adding_feed.png" alt="addfeed">
+                <img src="../static/img/adding_feed.png" style="width: 20px; height: 20px;" alt="addfeed">
             </button>
             <div class="dropdown">
-                <button class="feedadd" type="button" id="dropdownMenuButton2"
+                <button class="feedadd" type="button" id="dropdownMenuButton3"
                         data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3" id="research_list">
+                    <li><a class="dropdown-item" href="">준비중입니다</a></li>
                 </ul>
             </div>
-            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                        <div class="dropdown">
+                <button class="feedadd" type="button" id="dropdownMenuButton2" onclick="feed_alert()"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2" id="alert_list">
+
+                </ul>
+            </div>
             <div class="dropdown">
                 <button class="feedadd" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -81,7 +87,6 @@
                 <span class="sub-title">회원님을 위한 추천</span>
             </div>
             <ul class="recommend-list" id="recommend-list">
-
             </ul>
         </div>
         <!-- recommendation section -->
