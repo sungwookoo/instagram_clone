@@ -5,6 +5,8 @@
 /*!* general *!*/
 .pic {
     border-radius: 100%;
+    width: 28px;
+    height: 28px;
 }
 /* nav */
 nav {
@@ -15,6 +17,7 @@ nav {
     justify-content: center;
     background-color: white;
     border-bottom: 1px solid #DBDBDB;
+    z-index: 1;
 }
 .nav-container {
     max-width: 1000px;
@@ -117,7 +120,12 @@ nav img {
     margin-left: 30px;
 }
 .setting_button{
-    font-size: 20px;
+    font-size: 15px;
+    margin-top: 5px;
+    color: ghostwhite;
+    background-color: palegreen;
+    border: solid palegreen;
+    border-radius: 10px;
 }
 .profile_post_box{
     display: flex;
@@ -165,4 +173,64 @@ nav img {
 .feed{
     /*width: 300px;*/
     /*height: 300px;*/
+}
+
+/*모달*/
+.addfeed_ul{
+    margin-right: 44z   px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addfeed_li{
+    height: 40px;
+    width: 340px;
+    border-bottom-color: #8a8a8a;
+    align-self: center;
+}
+
+.addfeed_li2{
+    height: 340px;
+    width: 340px;
+    outline: 2px;
+    outline-color: #8a8a8a;
+}
+
+.btnfeedadd{
+    width:350px;
+    border: 1px solid black;
+    background-color: rgba(0,0,0,0);
+    color:black;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.textfeed{
+    width:350px;
+    border-color: black;
+    border: 1px solid deeppink;
+    border-radius: 3px;
+    height: 35px;
+}
+
+.real-upload {
+    margin-top: 30px;
+    height: 305px;
+    vertical-align: middle;
+    border: 1px solid black;
+    width: 350px;
+    color: black;
+    border-radius: 3px;
+    bookmark-label: none;
+    background-image: url('../img/feedadddd.png');
+    background-size: cover;
+}
+input[type=file]::file-selector-button {
+    display: none;
+}
+.feedaddtitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
 }
