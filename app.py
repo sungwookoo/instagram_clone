@@ -58,6 +58,7 @@ def signup():
 def login():
     return check_token('login.html')
 
+# 프로필 API
 @app.route('/profile')
 def profile():
     return check_token('profile.html')
@@ -85,6 +86,21 @@ def getProfile():
         # 'all_followers': followers,
         # 'all_followings': followings
     })
+
+# 프로필 사진 편집
+@app.route('/api/edit_profile', methods=['get', 'POST'])
+def edit_profile():
+    if request.files['file']:
+        if request.method == 'POST':
+            file = request.files['file']
+            user_id = request.form['user_id']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('static', 'uploads', filename))
+            profile_img_src = os.path.join('static', 'uploads', filename)
+
+            db.users.update_one({'user_id':user_id},{'$set':{'profile_img_src':profile_img_src}})
+            return redirect(url_for('profile'))
+
 
 @app.route('/api/register', methods=['POST'])
 def sign_up():
