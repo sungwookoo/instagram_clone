@@ -148,18 +148,21 @@ nav img {
     border-bottom: 1px solid lightgray;
 }
 .feed_container{
-     position: absolute;
+    position: absolute;
         top: 400px;
         left: 300px;
-    width: 1010px;
-    height: 1000px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 3.5rem;
+    /*width: 1010px;*/
+    /*height: 1000px;*/
+
 }
 .feed_box{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 50px;
+    /*justify-content: space-between;*/
+    /*margin-bottom: 50px;*/
 }
 .feed{
-    width: 300px;
-    height: 300px;
+    /*width: 300px;*/
+    /*height: 300px;*/
 }

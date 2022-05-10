@@ -22,11 +22,20 @@ span.sub-span {
     font-size: 12px;
     color: #8e8e8e;
 }
+
 span.point-span {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
     color: #262626;
 }
+
+.like_size {
+
+    font-weight: 700;
+    font-size: 14.5px;
+    color: #262626;
+}
+
 /* nav */
 nav {
     width: 100%;
@@ -103,15 +112,8 @@ nav img {
     background-position: center left;
     background-image: url('../img/cancel.png');
   }
-.feedadd {
-    width: 27px;
-    height: 27px;
-    margin-left: 15px;
-    all: unset;
-}
-.modal-dialog {
-    z-index: 2001;
-}
+
+
 /* main */
 main {
     width: 960px;
@@ -130,7 +132,7 @@ main {
     margin-right: 34px;
     display: inline-block;
 }
-article, .section-story, .section-recommend {
+article, .section-recommend {
     background-color: #fff;
     border-radius: 3px;
     border: 1px solid #DBDBDB;
@@ -138,19 +140,14 @@ article, .section-story, .section-recommend {
 article {
     margin-bottom: 60px;
 }
-.section-story, .section-recommend {
+.section-recommend {
+    height: 300px;
     width: 310px;
     padding: 14px 16px;
-    overflow-y: hidden;
-}
-.section-story {
-    height: 212px;
-    margin-bottom: 20px;
     overflow-y: auto;
+    margin-bottom: 20px;
 }
-.section-recommend {
-    height: 180px;
-}
+
 /* article */
 header {
     height: 60px;
@@ -198,13 +195,13 @@ header {
 }
 /* article text data */
 .reaction {
+    margin-top: 15px;
     padding: 0 16px;
 }
 .liked-people {
     display: flex;
-    align-items: center;
-    height: 18px;
-    margin: 2px 0 8px 0;
+    height: 12px;
+    margin: 5px 0 6px 0;
 }
 .liked-people img {
     display: inline-block;
@@ -221,7 +218,7 @@ header {
 .description {
     display: flex;
     align-items: center;
-    height: 18px;
+    font-size:20px;
 }
 span.at-tag {
     color: #00376B;
@@ -230,7 +227,6 @@ ul.comments {
     margin-top: 5px;
 }
 ul.comments li {
-    height: 21px;
     display: flex;
     justify-content: space-between;
     color: #262626;
@@ -391,4 +387,81 @@ ul.story-list .profile-text {
 .recommend-friend-profile {
     display: flex;
     align-items: flex-start;
+}
+
+.like_button {
+    width: 20px;
+    height: 20px;
+    all: unset;
+}
+
+.morebutton{
+    width: 27px;
+    height: 27px;
+    margin-left: 15px;
+    all: unset;
+}
+
+.toseemore{
+    color: #8e8e8e;
+    text-decoration: underline;
+
+}
+
+.addfeed_ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addfeed_li{
+    height: 40px;
+    width: 340px;
+    border-bottom-color: #8a8a8a;
+    align-self: center;
+}
+
+.addfeed_li2{
+    height: 340px;
+    width: 340px;
+    outline: 2px;
+    outline-color: #8a8a8a;
+}
+
+.btnfeedadd{
+    width:350px;
+    border: 1px solid black;
+    background-color: rgba(0,0,0,0);
+    color:black;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.textfeed{
+    width:350px;
+    border-color: black;
+    border: 1px solid black;
+    border-radius: 3px;
+    height: 35px;
+}
+
+.real-upload {
+    margin-top: 30px;
+    height: 305px;
+    vertical-align: middle;
+    border: 1px solid black;
+    width: 350px;
+    color: black;
+    border-radius: 3px;
+    bookmark-label: none;
+    background-image: url('../img/feedadddd.png');
+    background-size: cover;
+}
+input[type=file]::file-selector-button {
+    display: none;
+}
+.feedaddtitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
 }
