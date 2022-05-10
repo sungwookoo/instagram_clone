@@ -369,36 +369,67 @@ function getFeed() {
 }
 
 // 추천 리스트
+// 추천 리스트
+// 추천 리스트
 function getRecommend() {
     $.ajax({
         type: "GET", url: "/api/recommend", data: {}, success: function (response) {
             let users = response['all_users'];
-            // 팔로워 생기면 추가
+            let followers = response['all_follower'];
+            
             for (let i = 0; i < users.length; i++) {
                 let user_id = users[i]['user_id'];
+                let profile_img = users[i]['profile_img_src'];
+                let name = users[i]['name'];
+                let check=0;
+                for (let j=0; j< followers.length; j++){
+                    let follower_id = followers[j]['follower']
+                    let following_id = followers[j]['following']
+
+                    // 대상이 내가 아니고, 내가 팔로잉 한게 아니면
+                    if ((following_id == current_user_id && user_id == follower_id)) {
+                        check ++;    
+                    }}
+                if (current_user_id != user_id && check==0){
+                let temp_recommend = `
+                                <li>
+                                <div class="recommend-friend-profile">
+                                    <img class="img-profile"
+                                         src="${profile_img}"
+                                         alt="renebaebae님의 프로필 사진">
+                                    <div class="profile-text">
+                                        <span class="userID point-span">${user_id}</span>
+                                        <span class="sub-span">${name}</span>
+                                    </div>
+                                </div>
+                                <div id="follow">
+                                    <a id="fo-m${i}" onclick="follow('${user_id}','${i}')">팔로우</a>
+                                </div>
+                            </li>
+                                `;
+                $('#recommend-list').append(temp_recommend)
+                
+
+            }
                 // 팔로워 생기면 만약 팔로워가 아니면 추가.
-                if (current_user_id !== users[i]['user_id']) {
-                    let profile_img = users[i]['profile_img_src'];
-                    let name = users[i]['name'];
-
-                    let temp_recommend = `
-                    <li>
-                    <div class="recommend-friend-profile">
-                        <img class="img-profile"
-                             src="${profile_img}"
-                             alt="renebaebae님의 프로필 사진">
-                        <div class="profile-text">
-                            <span class="userID point-span">${user_id}</span>
-                            <span class="sub-span">${name}</span>
-                        </div>
-                    </div>
-                    <span class="btn-follow">팔로우</span>
-                </li>
-                    `
-                    $('#recommend-list').append(temp_recommend);
-                }
-
-
+            }
+        }
+    })
+}
+function follow(Follow_ID,i){
+    f_id = Follow_ID
+    $.ajax({
+        type: "POST",
+        url: "/api/follow",
+        data: {follower : f_id, following : current_user_id},
+        success: function (response) {
+            console.log(response);
+            if(response['success'] == 'follow'){
+                $('#fo-m'+i).html('언팔로우');
+                alert('팔로우 했습니다!')
+            }else{
+                $('#fo-m'+i).html('팔로우');
+                alert('언팔로우 했습니다!')
             }
         }
     })
