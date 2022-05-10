@@ -151,8 +151,9 @@ function commentmore(i, feed_idx) {
                 if (feed_idx === comments[x]['feed_idx']) {
                     let writer = comments[x]['writer_id'];
                     let comment_content = comments[x]['content'];
+                    let created_at = comments[x]['created_at'];
                     let temp_comment = `<li class="comment_plus">
-                            <span><span class="point-span userID">${writer}</span>${comment_content}</span>
+                            <span><span class="point-span userID">${writer}</span>${comment_content}<span style="float: right">${timeForToday(created_at)}</span></span>
                         </li>`
                     $('#modalcomment' + i).append(temp_comment);
                 }
