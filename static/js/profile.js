@@ -51,7 +51,7 @@ function getProfile() {
                             <div class="profile_nickname_box">
                                 <div class="profile_nickname">${user_id}</div>
                                 <div class="profile_setting">
-<!--                                    <button class="setting_button" data-bs-toggle="modal" data-bs-target="#editprofileimg">프로필 편집</button>-->
+                                    <button class="setting_button" data-bs-toggle="modal" data-bs-target="#editprofileimg">프로필 편집</button>
                                 </div>
                             </div>
                             <div class="profile_post_box">

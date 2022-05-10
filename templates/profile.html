@@ -62,41 +62,36 @@
 
 <!-- feed -->
 <article id="myfeedimg" class="feed_container">
-{#    <div  class="feed_box">#}
-{#    </div>#}
+<!--    <div  class="feed_box">-->
+<!--    </div>-->
 </article>
 
-{#<div class="modal fade" id="editprofileimg" tabindex="-1" aria-labelledby="editprofileimgLabel" aria-hidden="true">#}
-{#    <div class="modal-dialog">#}
-{#        <div class="modal-content">#}
-{#            <ul class="addfeed_ul">#}
-{#                <form action="/api/edit_profile" method="POST"#}
-{#                      enctype="multipart/form-data">#}
-{#                    <li class="addfeed_li">#}
-{#                        <div class="feedaddtitle"><br>새 프로필 사진</div>#}
-{#                    </li>#}
-{#                    <li class="addfeed_li2">#}
-{#                        <input type="file" name="file" class="real-upload" accept="image/*" required multiple>#}
-{#                    </li>#}
-{#                    <li class="addfeed_li">#}
-{#                        <input class="textfeed" type="text" name="content" placeholder="내용">#}
-{#                        <input type="hidden" name="user_id" value="{{ user_id }}">#}
-{#                    </li>#}
-{#                    <li class="addfeed_li">#}
-{#                        <button type="submit" class="btnfeedadd" data-bs-dismiss="modal" id="downloadimg">게시</button>#}
-{#                    </li>#}
-{##}
-{#                    <li class="addfeed_li">#}
-{#                        <button type="button" class="btnfeedadd" data-bs-dismiss="modal">닫기</button>#}
-{#                    </li>#}
-{#                    <li class="addfeed_li">#}
-{#                    </li>#}
-{#                </form>#}
-{#            </ul>#}
-{##}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
+<div class="modal fade" id="editprofileimg" tabindex="-1" aria-labelledby="editprofileimgLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <ul class="addfeed_ul">
+                <form action="/api/edit_profile" method="POST"
+                      enctype="multipart/form-data">
+                    <div class="addfeed_li">
+                        <div class="feedaddtitle"><br>새 프로필 사진</div>
+                    </div>
+                    <div class="addfeed_li2">
+                        <input placeholder="zz" type="file" name="file" class="real-upload" accept="image/*" required multiple>
+                        <input type="hidden" name="user_id" value="{{ user_id }}">
+                    </div>
+                    <div class="addfeed_li">
+                        <button type="submit" class="btnfeedadd" data-bs-dismiss="modal" id="downloadimg">게시</button>
+                    </div>
+                    <div class="addfeed_li">
+                        <button type="button" class="btnfeedadd" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                    <div class="addfeed_li">
+                    </div>
+                </form>
+            </ul>
+        </div>
+    </div>
+</div>
 
 </body>
 
