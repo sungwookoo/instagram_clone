@@ -308,6 +308,27 @@ def get_profile():
         'all_users': users
     })
 
+#팔로우 언팔로우
+@app.route('/api/follow', methods=['POST'])
+def is_following():
+    token_receive = request.cookies.get('token')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    print(payload['id'])
+    follow_id = request.form['f_give']
+    print(follow_id)
+
+    my_follow = db.users.find_one({'id':payload['id']})
+    print(my_follow['following'])
+
+    if follow_id in my_follow['following']:
+        db.users.update_one({'id': payload['id']}, {'$pull': {'following': follow_id}})
+        print('DB 에 팔로우 제거')
+        return jsonify(({'result': 'success', 'is_following': 0}))
+
+    else:
+        db.users.update_one({'id': payload['id']}, {'$push': {'following': follow_id}})
+        print('DB 에 팔로우 추가')
+        return jsonify({'result': 'success', 'is_following': 1})
 
 
 

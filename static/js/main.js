@@ -358,6 +358,27 @@ function getFeed() {
     })
 }
 
+function follow(Follow_ID){
+	alert(Follow_ID + '팔로우!')
+        f_id = Follow_ID
+        $.ajax({
+            type: "POST",
+            url: "/api/follow",
+            data: {'f_give': Follow_ID},
+            success: function (response) {
+                if (response['is_following'] == 1) {
+                    alert('팔로우 완료')
+                    let temp_html = `<a onclick="follow(f_id)">팔로잉</a>`
+                    $('#follow').append(temp_hteml);
+                } else {
+                    alert('언팔로우 완료')
+                    let temp_html = `<a onclick="follow(f_id)">팔로우</a>`
+                    $('#follow').append(temp_hteml);
+                }
+            }
+        })
+}
+
 // 추천 리스트
 function getRecommend() {
     $.ajax({
@@ -382,7 +403,9 @@ function getRecommend() {
                             <span class="sub-span">${name}</span>
                         </div>
                     </div>
-                    <span class="btn-follow">팔로우</span>
+                    <div id="follow">
+                        <a onclick="follow(useer_id)"><span class="btn-follow">팔로우</span></a>
+                    </div>
                 </li>
                     `
                     $('#recommend-list').append(temp_recommend);
