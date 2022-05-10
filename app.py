@@ -87,7 +87,7 @@ def getProfile():
         # 'all_followings': followings
     })
 
-# 프로필 사진 편집
+# 마이프로필 사진 편집
 @app.route('/api/edit_profile', methods=['get', 'POST'])
 def edit_profile():
     if request.files['file']:
