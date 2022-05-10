@@ -21,5 +21,12 @@ function logout() {
 }
 
 function getProfile() {
-
+    $.ajax({
+        type: "GET",
+        url: "/api/profile",
+        data: {'user_id'},
+        success: function (response) {
+        let users = response['all_users'];
+        }
+    })
 }

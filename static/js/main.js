@@ -115,7 +115,7 @@ function getFeed() {
                             <img class="icon-react icon-more"
                              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" alt="more">               
                         </button>
-                    </header>
+                </header>
                 <div class="main-image">
                     <img src="${feed_img_src}"
                          alt="" class="mainPic">
@@ -124,7 +124,7 @@ function getFeed() {
                     <div class="icons-left">
                         <button class="like_button" onclick="saveLike('${feed_idx}')">
                         <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png">
-</button>
+                        </button>
                         <img class="icon-react"
                              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png" alt="말풍선">
                         <img class="icon-react" src="../static/img/dm.png" alt="DM">
