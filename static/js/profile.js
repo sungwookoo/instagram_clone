@@ -63,10 +63,11 @@ function getProfile() {
                         </div>
                     `
                     $('#myprofileimg').append(temp_myprofile);
-                    // let temp_myprofilebar = `
-                    //
-                    // `
-                    // $('#profilebar').append(temp_myprofilebar);
+
+                    let temp_myprofilebar = `
+                    <img class="pic" src="${profile_img}" alt="마이프로필">
+                    `
+                    $('#profilebar').append(temp_myprofilebar);
                 }
             }
 // 마이 피드

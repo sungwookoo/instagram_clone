@@ -5,6 +5,8 @@
 /*!* general *!*/
 .pic {
     border-radius: 100%;
+    width: 28px;
+    height: 28px;
 }
 /* nav */
 nav {
@@ -118,7 +120,12 @@ nav img {
     margin-left: 30px;
 }
 .setting_button{
-    font-size: 20px;
+    font-size: 15px;
+    margin-top: 5px;
+    color: ghostwhite;
+    background-color: palegreen;
+    border: solid palegreen;
+    border-radius: 10px;
 }
 .profile_post_box{
     display: flex;
