@@ -162,17 +162,28 @@ def get_feed():
     users = list(db.users.find({}))
     feeds = list(db.feed.find({}))
     likes = list(db.like.find({}))
+    comments = list(db.comment.find({}))
+    comments = objectIdToString(comments)
     feeds = objectIdToString(feeds)
     users = objectIdToString(users)
     likes = objectIdToString(likes)
     return jsonify({'all_users': users,
                     'all_feeds': feeds,
-                    'all_likes': likes
+                    'all_likes': likes,
+                    'all_comments': comments
                     })
 
 
 @app.route('/api/comment', methods=['GET'])
 def get_comment():
+    comments = list(db.comment.find({}))
+    comments = objectIdToString(comments)
+    return jsonify({
+        'all_comments': comments
+    })
+
+@app.route('/api/commentcount', methods=['GET'])
+def get_commentcount():
     comments = list(db.comment.find({}))
     comments = objectIdToString(comments)
     return jsonify({
@@ -232,7 +243,7 @@ def like():
 
         db.like.insert_one(doc)
 
-    return jsonify({'msg': '좋아요.'})
+    return jsonify({'msg': 'good!'})
 
 # 리포스트
 @app.route('/api/repost', methods=['POST'])

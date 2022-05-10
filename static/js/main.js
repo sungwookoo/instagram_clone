@@ -56,22 +56,43 @@ function viewmore(i, content) {
     $('.mycontent' + i).html(content)
 }
 
+// 댓글 수 세기
+function comment_count(i, feed_idx){
+    console.log(i, feed_idx)
+    $.ajax({
+        type: "GET", url: "/api/commentcount", data: {}, success: function (response) {
+        let comments = response['all_comments'];
+        let comment_count= 0;
+        for (let k = 0; k < comments.length; k++) {
+                        if (feed_idx === comments[k]['feed_idx']) {
+                            comment_count++
+                        }
+                    }
+
+        if (comment_count != 0) {
+            let comment_basic =
+                `<button type="button" class="morebutton" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" onclick="commentmore('${i}','${feed_idx}')">
+                <p class="toseemore"> 댓글 ${comment_count}개 모두 보기 </p>
+            </button>`
+            $('#commentappend'+i).append(comment_basic);
+        }
+}})}
 // 댓글 더보기 modal
 function commentmore(i, feed_idx) {
-    $('li').remove();
+    $('.comment_plus').remove();
     $.ajax({
         type: "GET", url: "/api/comment", data: {}, success: function (response) {
             let comments = response['all_comments'];
-
             for (let x = 0; x < comments.length; x++) {
                 if (feed_idx === comments[x]['feed_idx']) {
                     let writer = comments[x]['writer_id'];
                     let comment_content = comments[x]['content'];
-                    let temp_comment = `<li>
+                    let temp_comment = `<li class="comment_plus">
                             <span><span class="point-span userID">${writer}</span>${comment_content}</span>
                         </li>`
                     $('#modalcomment' + i).append(temp_comment);
                 }
+
             }
         }
     })
@@ -153,9 +174,8 @@ function getFeed() {
                 let user_id = feeds[i]['user_id'];
                 let feed_idx = feeds[i]['_id'];
                 let like_count = 0;
-                let comment_basic = `<button type="button" class="morebutton" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}" onclick="commentmore('${i}','${feed_idx}')">
-                        <p class="toseemore"> 댓글 더보기 </p>
-                    </button>`
+
+
                 for (let k = 0; k < likes.length; k++) {
                     if (likes[k]['feed_idx'] === feed_idx) {
                         like_count++
@@ -197,15 +217,15 @@ function getFeed() {
                 <!-- article text data -->
                 <div class="reaction">
                     <div class="liked-people">
-                        <p><span class="point-span">좋아요</span> <span class="point-span">${like_count}개</span></p>
+                        <p><span class="like_size">좋아요</span> <span class="point-span">${like_count}개</span></p>
                     </div>
                     <div class="description">
                         <div><span class="point-span userID">${user_id}</span><span class="mycontent${i}">${content}</span></div>
                     </div>
                     <div class="comment-section">
-                        <ul class="comments">
-                            ${comment_basic}
-                        </ul>
+                        <div class="comments" id="commentappend${i}">
+                            
+                        </div>
                         <div class="time-log">
                             <span>${created_at}</span>
                         </div>
@@ -222,8 +242,8 @@ function getFeed() {
                     }
 
                 }
-
-
+                console.log(i)
+                comment_count(i,feed_idx)
                 let content_txt = $('.mycontent').text();
                 let content_txt_short = content_txt.substring(0, 30) + "..." + `<a href="javascript:void(0)" class="more" onclick="viewmore('${i}', '${content}')">더보기</a>`;
 
