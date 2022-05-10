@@ -116,7 +116,7 @@ def sign_up():
                'name': request.form['name_give'],
                'phone': request.form['phone_give'],
                'email': request.form['email_give'],
-               'profile_img_src': '',
+               'profile_img_src': 'https://picsum.photos/100'
                }
         db.users.insert_one(doc)
         return jsonify({'msg': '회원가입이 완료되었습니다.'})
