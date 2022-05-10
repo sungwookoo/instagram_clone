@@ -39,9 +39,24 @@
             <button type="button" class="feedadd" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <img src="../static/img/adding_feed.png" style="width: 20px; height: 20px;" alt="addfeed">
             </button>
+            <div class="dropdown">
+                <button class="feedadd" type="button" id="dropdownMenuButton3"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3" id="research_list">
+                    <li><a class="dropdown-item" href="">준비중입니다</a></li>
+                </ul>
+            </div>
+                        <div class="dropdown">
+                <button class="feedadd" type="button" id="dropdownMenuButton2" onclick="feed_alert()"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2" id="alert_list">
 
-            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
-            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png" alt="하트">
+                </ul>
+            </div>
             <div class="dropdown">
                 <button class="feedadd" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false">
