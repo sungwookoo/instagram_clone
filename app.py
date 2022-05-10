@@ -204,6 +204,7 @@ def get_comment():
         'all_comments': comments
     })
 
+
 @app.route('/api/commentcount', methods=['GET'])
 def get_commentcount():
     comments = list(db.comment.find({}))
@@ -211,6 +212,7 @@ def get_commentcount():
     return jsonify({
         'all_comments': comments
     })
+
 
 # 추천 list get
 @app.route('/api/recommend', methods=['GET'])
@@ -266,6 +268,7 @@ def like():
 
     return jsonify({'msg': 'good!'})
 
+
 # 리포스트
 @app.route('/api/repost', methods=['POST'])
 def save_repost():
@@ -276,8 +279,8 @@ def save_repost():
     feeds = objectIdToString(feeds)
     for i in range(len(feeds)):
         if feed_idx == feeds[i]['_id']:
-            feed_img_src=feeds[i]['feed_img_src']
-            content=feeds[i]['content']
+            feed_img_src = feeds[i]['feed_img_src']
+            content = feeds[i]['content']
             doc = {
                 'user_id': user_id,
                 'feed_img_src': feed_img_src,
