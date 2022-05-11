@@ -31,12 +31,17 @@ function getProfile() {
 
             let users = response['all_users'];
             let feeds = response['all_feeds'];
-            // let followers = response['all_followers'];
-            // let followings = response['all_followings'];
+            let followers = response['all_followers'];
 
             let feed_count = feeds.length
-            // let follower_count = 0
-            // let following_count = 0
+            let follower_count = 0
+            let following_count = 0
+
+            for (let j = 0; j < followers.length; j++) {
+                if (followers[j]['following'] === current_user_id){following_count ++}
+                if (followers[j]['follower'] === current_user_id){follower_count ++}
+            }
+            console.log(following_count)
 // 마이 프로필
             for (let i = 0; i < users.length; i++) {
                 if (current_user_id === users[i]['user_id']) {
@@ -55,8 +60,8 @@ function getProfile() {
                             </div>
                             <div class="profile_post_box">
                                 <div class="profile_post">게시물 ${feed_count}</div>
-                                <div class="profile_follower">{follower_count}</div>
-                                <div class="profile_follow">{following_count}</div>
+                                <div class="profile_follower">팔로워 ${follower_count}</div>
+                                <div class="profile_follow">팔로우 ${following_count}</div>
                             </div>
                             <div class="profile_name"><strong>${name}</strong></div>
                         </div>
@@ -70,6 +75,7 @@ function getProfile() {
                 }
             }
 // 마이 피드
+            console.log('a')
             for (let k = 0; k < feeds.length; k++) {
                 if (current_user_id === feeds[k]['user_id']) {
                     let feed_img_src = feeds[k]['feed_img_src'];
