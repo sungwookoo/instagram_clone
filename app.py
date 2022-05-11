@@ -69,22 +69,17 @@ def profile():
 @app.route('/api/get_profile', methods=['GET'])
 def getProfile():
     user_id = request.args.get('user_id')
-    # follower = request.args.get('follower')
-    # following = request.args.get('following')
     users = list(db.users.find({'user_id': user_id}))
     users = objectIdToString(users)
     feeds = list(db.feed.find({'user_id': user_id}))
     feeds = objectIdToString(feeds)
-    # followers = list(db.follower.find({'follower': follower}))
-    # followers = objectIdToString(followers)
-    # followings = list(db.follower.find({'follower': following}))
-    # followings = objectIdToString(followings)
+    followers = list(db.follower.find())
+    followers = objectIdToString(followers)
 
     return jsonify({
         'all_users': users,
-        'all_feeds': feeds
-        # 'all_followers': followers,
-        # 'all_followings': followings
+        'all_feeds': feeds,
+        'all_followers': followers
     })
 
 # 프로필 사진 편집
