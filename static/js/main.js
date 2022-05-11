@@ -27,6 +27,11 @@ function timeForToday(value) {
     return `${Math.floor(betweenTimeDay / 365)}년전`;
 }
 
+function police() {
+    alert('신고는 112')
+    window.location.reload();
+}
+
 function logout() {
     $.ajax({
         type: "GET",
@@ -329,11 +334,11 @@ function getFeed() {
                       <div class="modal-dialog">
                         <div class="modal-content">
                                                       <div class="list-group">
-  <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
+  <button type="button" class="list-group-item list-group-item-action active" aria-current="true" onclick="police()">
     신고하기
   </button>
   <button type="button" class="list-group-item list-group-item-action" onclick="repost('${feed_idx}')">리포스트</button>
-  <button type="button" class="list-group-item list-group-item-action">팔로우 취소</button>
+  <button type="button" class="list-group-item list-group-item-action" onclick="follow('${user_id}')">팔로우 / 팔로우 취소</button>
   <button type="button" class="list-group-item list-group-item-action" onclick="removefeed('${feed_idx}', '${user_id}')">게시물 삭제</button>
   <button type="button" class="list-group-item list-group-item-action" data-bs-dismiss="modal">취소</button>
 </div>
