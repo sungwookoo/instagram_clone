@@ -422,20 +422,26 @@ function getRecommend() {
     })
 }
 function follow(Follow_ID,i){
-    f_id = Follow_ID
-    $.ajax({
-        type: "POST",
-        url: "/api/follow",
-        data: {follower : f_id, following : current_user_id},
-        success: function (response) {
-            console.log(response);
-            if(response['success'] == 'follow'){
-                $('#fo-m'+i).html('언팔로우');
-                alert('팔로우 했습니다!')
-            }else{
-                $('#fo-m'+i).html('팔로우');
-                alert('언팔로우 했습니다!')
+    if(Follow_ID !== current_user_id) {
+        f_id = Follow_ID
+        $.ajax({
+            type: "POST",
+            url: "/api/follow",
+            data: {follower: f_id, following: current_user_id},
+            success: function (response) {
+                console.log(response);
+                if (response['success'] == 'follow') {
+                    $('#fo-m' + i).html('언팔로우');
+                    alert('팔로우 했습니다!')
+                } else {
+                    $('#fo-m' + i).html('팔로우');
+                    alert('언팔로우 했습니다!')
+                }
             }
-        }
-    })
+        })
+    }
+    else {
+        alert('자신은 팔로우 할 수 없습니다.');
+        return false;
+    }
 }
