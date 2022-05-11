@@ -126,7 +126,7 @@ main {
     display: inline-block;
     position: fixed;
     top: 94px;
-    z-index: -1;
+    z-index: 0;
 }
 
 .feeds {
